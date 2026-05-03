@@ -3,608 +3,849 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>数学Ⅱ １学期中間考査対策γ</title>
-<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Klee+One:wght@400;600&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+<title>数学Ⅱ 魔法学院の試練</title>
+<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<script>
+window.MathJax={
+  tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},
+  options:{skipHtmlTags:['script','noscript','style','textarea']},
+  startup:{typeset:false}
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 <style>
-:root {
-  --bg: #f4efe4;
-  --paper: #fefcf5;
-  --ink: #1a1408;
-  --red: #b5251a;
-  --blue: #1a4a8a;
-  --green: #1a6a3a;
-  --line: #c8bda0;
-  --ruled: #ddd5be;
-  --sh: rgba(26,20,8,0.12);
-  --ok-bg: #eaf6ed; --ok-bd: #2e7d48;
-  --ng-bg: #fdecea; --ng-bd: #c0392b;
-}
 *{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07040f;
+  --surface:#100820;
+  --card:#160e2a;
+  --border:#3a2860;
+  --gold:#ffe066;
+  --gold2:#ffd700;
+  --purple:#b090ff;
+  --purple2:#d0b8ff;
+  --cyan:#5af0e0;
+  --green:#44ee88;
+  --red:#ff6060;
+  --white:#ffffff;
+  --text:#f0ecff;       /* メインテキスト：ほぼ白 */
+  --text2:#ccc0ee;      /* サブテキスト：明るいラベンダー */
+  --text3:#9080c0;      /* ヒント・薄め */
+  --ok:#44ee88;
+  --ng:#ff6060;
+}
+html{scroll-behavior:smooth}
 body{
   background:var(--bg);
-  background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,var(--ruled) 27px,var(--ruled) 28px);
-  min-height:100vh;font-family:'Klee One',cursive;color:var(--ink);padding:16px 12px 52px;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 15% 15%,rgba(90,40,180,.3) 0%,transparent 70%),
+    radial-gradient(ellipse 60% 40% at 85% 85%,rgba(30,60,160,.25) 0%,transparent 70%);
+  min-height:100vh;
+  font-family:'Noto Sans JP',sans-serif;
+  color:var(--text);
+  overflow-x:hidden;
 }
 
-/* ── HEADER ── */
-.hdr{max-width:800px;margin:0 auto 24px;background:var(--paper);border:2px solid var(--ink);border-radius:2px;box-shadow:4px 4px 0 var(--ink);padding:20px 24px 16px;position:relative}
-.hdr::after{content:'';position:absolute;left:48px;top:0;bottom:0;width:1.5px;background:var(--red);opacity:.4}
-.hdr-title{font-family:'Kaisei Decol',serif;font-size:clamp(16px,3.5vw,22px);font-weight:700;color:var(--red);padding-left:58px;line-height:1.4}
-.hdr-sub{font-size:12px;color:#999;padding-left:58px;margin-top:4px}
-.prog-row{display:flex;align-items:center;gap:10px;padding-left:58px;margin-top:12px}
-.prog-out{flex:1;height:8px;background:var(--ruled);border-radius:99px;border:1px solid var(--line);overflow:hidden}
-.prog-in{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:99px;transition:width .5s ease;width:0%}
-.prog-txt{font-family:'Caveat',cursive;font-size:16px;min-width:70px;text-align:right;color:var(--ink)}
+/* ── float animation ── */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 12px rgba(68,238,136,.4)}50%{box-shadow:0 0 28px rgba(68,238,136,.9)}}
+@keyframes particleFly{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-90px) scale(.4);opacity:0}}
+@keyframes popupFly{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-56px);opacity:0}}
 
-/* ── SECTION ── */
-.sec{max-width:800px;margin:22px auto 10px;font-family:'Kaisei Decol',serif;font-size:14px;font-weight:700;color:var(--blue);padding:5px 14px;border-left:4px solid var(--blue);background:rgba(26,74,138,.06);border-radius:0 3px 3px 0;line-height:1.6}
+/* ══════════════════════════════
+   TITLE SCREEN
+══════════════════════════════ */
+#titleScreen{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;padding:32px 20px;text-align:center;
+}
+.t-castle{font-size:72px;margin-bottom:10px;animation:float 3s ease-in-out infinite;line-height:1}
+.t-main{
+  font-family:'Kaisei Decol',serif;font-size:clamp(22px,5vw,34px);font-weight:700;
+  color:var(--gold);line-height:1.3;margin-bottom:6px;
+  text-shadow:0 0 24px rgba(255,224,102,.6);
+}
+.t-sub{font-size:13px;color:var(--text2);margin-bottom:28px;letter-spacing:.06em}
+.t-story{
+  max-width:460px;font-size:14px;color:var(--text);line-height:2;margin-bottom:32px;
+  padding:20px 24px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);border-radius:10px;text-align:left;
+}
+.t-story b{color:var(--gold)}
+.btn-start{
+  background:linear-gradient(135deg,#5020b0,#8040e0);color:#fff;border:none;
+  border-radius:10px;padding:16px 52px;font-family:'Kaisei Decol',serif;
+  font-size:18px;font-weight:700;cursor:pointer;letter-spacing:.06em;
+  box-shadow:0 0 24px rgba(128,64,224,.6);transition:all .2s;
+}
+.btn-start:hover{transform:translateY(-3px);box-shadow:0 0 40px rgba(128,64,224,.9)}
 
-/* ── CARD ── */
-.card{max-width:800px;margin:0 auto 12px;background:var(--paper);border:1.5px solid var(--line);border-radius:2px;box-shadow:2px 2px 0 var(--sh);position:relative}
-.card::before{content:'';position:absolute;left:48px;top:0;bottom:0;width:1px;background:var(--red);opacity:.28}
-.card-in{display:flex;align-items:flex-start;padding:14px 18px 14px 0}
-.qnum{min-width:48px;text-align:center;font-family:'Caveat',cursive;font-size:19px;font-weight:700;color:var(--blue);padding-top:2px;flex-shrink:0}
-.qbody{flex:1}
-.qtext{font-size:clamp(13px,2vw,15px);line-height:1.9;margin-bottom:12px}
+/* ══════════════════════════════
+   STATUS BAR
+══════════════════════════════ */
+#statusBar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(7,4,15,.92);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(10px);padding:10px 16px;
+}
+#statusBar.active{display:block}
+.sb-inner{max-width:700px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}
+.sb-hero{display:flex;align-items:center;gap:9px}
+.sb-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,#5020b0,#9050f0);
+  border:2px solid var(--purple);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+}
+.sb-name{font-family:'Kaisei Decol',serif;font-size:13px;font-weight:700;color:var(--gold);line-height:1.3}
+.sb-lv{font-size:11px;color:var(--purple2);line-height:1.3}
+.sb-bars{display:flex;flex-direction:column;gap:5px;flex:1}
+.bar-row{display:flex;align-items:center;gap:6px}
+.bar-lbl{font-size:11px;font-weight:700;min-width:24px;letter-spacing:.03em}
+.bar-lbl.hp{color:var(--green)}
+.bar-lbl.xp{color:var(--purple2)}
+.bar-out{flex:1;height:9px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.bar-in{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.bar-in.hp{background:linear-gradient(90deg,#22c55e,#86efac)}
+.bar-in.xp{background:linear-gradient(90deg,#7c3aed,#c084fc)}
+.bar-val{font-family:'Caveat',cursive;font-size:13px;font-weight:700;color:var(--white);min-width:58px;text-align:right}
+.sb-score{
+  font-family:'Caveat',cursive;font-size:16px;font-weight:700;
+  color:var(--gold);white-space:nowrap;
+  background:rgba(255,224,102,.1);border:1px solid rgba(255,224,102,.35);
+  border-radius:20px;padding:5px 13px;
+}
 
-/* ── MATH ── */
-/* インライン数式 */
-.mi{font-family:'Caveat',cursive;font-size:1.07em;letter-spacing:.01em}
-/* 分数 */
-.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-family:'Caveat',cursive;line-height:1.15;margin:0 1px}
-.fr .n{border-bottom:1.5px solid currentColor;padding:0 3px 1px;font-size:.88em}
-.fr .d{padding:1px 3px 0;font-size:.88em}
-/* 根号（√＋overline） */
-.rt{display:inline-flex;align-items:flex-end;font-family:'Caveat',cursive;vertical-align:middle;line-height:1}
-.rt-sym{font-size:1.12em;line-height:1;margin-right:-1px}
-.rt-body{border-top:1.5px solid currentColor;padding:0 2px 0 1px;line-height:1.25;font-family:'Caveat',cursive}
+/* ══════════════════════════════
+   GAME AREA (single-question turn)
+══════════════════════════════ */
+#gameArea{display:none;max-width:700px;margin:0 auto;padding:24px 16px 60px}
+#gameArea.active{display:block}
 
-/* ── CHOICES ── */
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:2px}
-@media(max-width:500px){.choices{grid-template-columns:1fr}}
-.cbtn{background:var(--paper);border:1.5px solid var(--line);border-radius:3px;padding:9px 11px;font-family:'Klee One',cursive;font-size:clamp(12px,2vw,14px);color:var(--ink);cursor:pointer;text-align:left;line-height:1.7;display:flex;align-items:flex-start;gap:6px;box-shadow:1px 1px 0 var(--sh);transition:all .1s}
-.cbtn:hover:not(:disabled){background:#fff9e6;border-color:var(--blue);transform:translateY(-1px)}
-.clbl{font-family:'Caveat',cursive;font-size:18px;font-weight:700;color:var(--blue);flex-shrink:0;line-height:1.2}
-.cbtn.ok{background:var(--ok-bg);border-color:var(--ok-bd);color:#1b5e20;box-shadow:1px 1px 0 var(--ok-bd)}
-.cbtn.ng{background:var(--ng-bg);border-color:var(--ng-bd);color:#7f0000;box-shadow:1px 1px 0 var(--ng-bd)}
+/* chapter badge */
+.chap-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(176,144,255,.12);border:1px solid rgba(176,144,255,.35);
+  border-radius:6px;padding:6px 14px;margin-bottom:16px;
+  font-size:13px;font-weight:700;color:var(--purple2);letter-spacing:.04em;
+}
+.chap-badge span{font-size:18px}
+
+/* progress dots */
+.prog-dots{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:20px}
+.dot{
+  width:10px;height:10px;border-radius:50%;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  transition:all .3s;
+}
+.dot.done-ok{background:var(--green);border-color:var(--green)}
+.dot.done-ng{background:var(--ng);border-color:var(--ng)}
+.dot.current{background:var(--gold);border-color:var(--gold);box-shadow:0 0 8px var(--gold)}
+
+/* question card */
+.q-card{
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:14px;
+  padding:24px 22px 20px;
+  animation:fadeUp .3s ease;
+  position:relative;
+  overflow:hidden;
+}
+.q-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--purple),var(--cyan));
+}
+.q-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.q-num-badge{
+  background:linear-gradient(135deg,#5020b0,#8040e0);color:#fff;
+  font-family:'Caveat',cursive;font-size:16px;font-weight:700;
+  padding:3px 14px;border-radius:20px;white-space:nowrap;
+}
+.q-flavor{font-size:12px;color:var(--text3);font-style:italic}
+.q-text{
+  font-size:clamp(15px,2.5vw,17px);line-height:2;
+  color:var(--white);
+  font-weight:500;
+  margin-bottom:20px;
+  padding:14px 16px;
+  background:rgba(255,255,255,.04);
+  border-radius:8px;
+  border-left:3px solid var(--purple);
+}
+/* MathJax overrides for visibility */
+.q-text .MathJax{color:var(--white)!important}
+mjx-container{color:var(--white)!important}
+
+/* choices */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+@media(max-width:480px){.choices{grid-template-columns:1fr}}
+.cbtn{
+  background:rgba(255,255,255,.05);
+  border:1.5px solid rgba(176,144,255,.3);
+  border-radius:10px;padding:13px 14px;
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:clamp(13px,2vw,15px);
+  font-weight:500;
+  color:var(--white);           /* ← 白でくっきり */
+  cursor:pointer;text-align:left;line-height:1.7;
+  display:flex;align-items:flex-start;gap:9px;
+  transition:all .12s;
+}
+.cbtn:hover:not(:disabled){
+  background:rgba(176,144,255,.15);
+  border-color:var(--purple);
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(176,144,255,.25);
+}
+.cbtn .lbl{
+  font-family:'Caveat',cursive;font-size:20px;font-weight:700;
+  color:var(--purple2);flex-shrink:0;line-height:1.2;
+  background:rgba(176,144,255,.15);border-radius:6px;
+  padding:0 7px;
+}
+.cbtn.ok{
+  background:rgba(68,238,136,.12);border-color:var(--ok);color:var(--white);
+  animation:glow .6s ease;
+}
+.cbtn.ok .lbl{color:var(--ok);background:rgba(68,238,136,.2)}
+.cbtn.ng{
+  background:rgba(255,96,96,.12);border-color:var(--ng);color:var(--white);
+  animation:shake .3s ease;
+}
+.cbtn.ng .lbl{color:var(--ng);background:rgba(255,96,96,.2)}
 .cbtn:disabled{cursor:default;transform:none}
+/* MathJax in choices */
+.cbtn mjx-container{color:var(--white)!important}
 
-/* ── EXPLANATION ── */
-.expbox{display:none;margin-top:10px;padding:9px 12px;border-radius:3px;font-size:13px;line-height:1.85;animation:fadeUp .25s ease}
+/* explanation */
+.expbox{
+  display:none;margin-top:14px;padding:14px 16px;border-radius:10px;
+  font-size:14px;line-height:1.9;font-weight:400;
+  animation:fadeUp .25s ease;
+}
 .expbox.show{display:block}
-.expbox.ok{background:var(--ok-bg);border:1px solid var(--ok-bd);color:#1b5e20}
-.expbox.ng{background:var(--ng-bg);border:1px solid var(--ng-bd);color:#7f0000}
-.exp-t{font-weight:600;font-family:'Kaisei Decol',serif;font-size:13px;margin-bottom:3px}
-@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.expbox.ok{background:rgba(68,238,136,.1);border:1px solid rgba(68,238,136,.4);color:#b9f5d4}
+.expbox.ng{background:rgba(255,96,96,.1);border:1px solid rgba(255,96,96,.4);color:#ffd0d0}
+.expbox .exp-t{font-weight:700;font-size:14px;margin-bottom:5px;color:var(--white)}
+.expbox mjx-container{color:var(--white)!important}
 
-/* ── NEXT ── */
-.nxt-wrap{text-align:right;margin-top:10px}
-.nxt{display:none;background:var(--ink);color:#fff;border:none;border-radius:3px;padding:8px 20px;font-family:'Klee One',cursive;font-size:13px;cursor:pointer;box-shadow:2px 2px 0 var(--red);transition:all .12s}
-.nxt:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--red)}
-.nxt.show{display:inline-block}
+/* next button */
+.btn-next{
+  display:none;margin-top:16px;width:100%;
+  background:linear-gradient(135deg,#4018a0,#7030d0);
+  color:#fff;border:none;border-radius:10px;
+  padding:14px;font-family:'Kaisei Decol',serif;
+  font-size:16px;font-weight:700;cursor:pointer;letter-spacing:.04em;
+  box-shadow:0 0 18px rgba(112,48,208,.5);transition:all .15s;
+}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(112,48,208,.8)}
+.btn-next.show{display:block}
 
-/* ── BADGE ── */
-.badge{position:fixed;top:12px;right:12px;background:var(--ink);color:#fff;font-family:'Caveat',cursive;font-size:16px;padding:5px 14px;border-radius:99px;box-shadow:2px 2px 0 var(--red);z-index:999}
+/* ══════════════════════════════
+   LEVEL UP OVERLAY
+══════════════════════════════ */
+#lvlOverlay{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.8);align-items:center;justify-content:center;
+}
+#lvlOverlay.show{display:flex;animation:fadeUp .3s ease}
+.lvl-box{
+  background:var(--surface);border:2px solid var(--gold);border-radius:18px;
+  padding:40px 52px;text-align:center;
+  box-shadow:0 0 60px rgba(255,224,102,.4);
+  animation:pop .4s cubic-bezier(.175,.885,.32,1.275);
+}
+.lvl-stars{font-size:36px;letter-spacing:6px;margin-bottom:8px}
+.lvl-up-txt{
+  font-family:'Kaisei Decol',serif;font-size:26px;font-weight:700;
+  color:var(--gold);margin-bottom:6px;
+  text-shadow:0 0 16px rgba(255,224,102,.8);
+}
+.lvl-num{font-family:'Caveat',cursive;font-size:64px;font-weight:700;color:var(--gold2);line-height:1}
+.lvl-title{font-size:17px;color:var(--purple2);margin:10px 0 4px;font-weight:700}
+.lvl-skill{font-size:13px;color:var(--text2);margin-bottom:22px;line-height:1.7}
+.btn-lvl-close{
+  background:var(--gold);color:#100800;border:none;border-radius:8px;
+  padding:11px 32px;font-family:'Kaisei Decol',serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:all .12s;
+}
+.btn-lvl-close:hover{background:var(--gold2)}
 
-/* ── RESULT ── */
-.result{display:none;max-width:800px;margin:24px auto 0;background:var(--paper);border:2px solid var(--ink);border-radius:2px;box-shadow:5px 5px 0 var(--ink);padding:36px 28px;text-align:center}
-.result.show{display:block;animation:fadeUp .4s ease}
-.r-em{font-size:58px;margin-bottom:10px}
-.r-hd{font-family:'Kaisei Decol',serif;font-size:20px;margin-bottom:16px}
-.r-sc{font-family:'Caveat',cursive;font-size:80px;color:var(--red);line-height:1}
-.r-dn{font-size:14px;color:#888;margin-bottom:20px}
-.r-msg{font-size:15px;line-height:1.9;max-width:460px;margin:0 auto 26px;padding:13px 16px;background:#fff9e6;border:1px dashed var(--line);border-radius:3px}
-.retry{background:var(--red);color:#fff;border:none;border-radius:3px;padding:11px 30px;font-family:'Klee One',cursive;font-size:15px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:all .12s}
-.retry:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+/* ══════════════════════════════
+   RESULT SCREEN
+══════════════════════════════ */
+#resultScreen{
+  display:none;max-width:700px;margin:0 auto;padding:24px 16px 60px;
+}
+#resultScreen.show{display:block;animation:fadeUp .4s ease}
+.res-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:16px;padding:40px 28px;text-align:center;
+}
+.res-trophy{font-size:68px;margin-bottom:12px;animation:float 3s ease-in-out infinite;line-height:1}
+.res-ttl{
+  font-family:'Kaisei Decol',serif;font-size:22px;font-weight:700;
+  color:var(--gold);margin-bottom:22px;
+  text-shadow:0 0 16px rgba(255,224,102,.5);
+}
+.res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.rstat{
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:10px;padding:16px 8px;
+}
+.rstat-val{font-family:'Caveat',cursive;font-size:34px;font-weight:700;color:var(--gold2);line-height:1;margin-bottom:6px}
+.rstat-lbl{font-size:12px;color:var(--text2);font-weight:500}
+.res-rank{font-family:'Kaisei Decol',serif;font-size:22px;color:var(--purple2);margin-bottom:10px;font-weight:700}
+.res-msg{font-size:14px;color:var(--text2);line-height:1.9;max-width:400px;margin:0 auto 28px}
+.btn-retry{
+  background:linear-gradient(135deg,#5020b0,#8040e0);color:#fff;border:none;
+  border-radius:10px;padding:14px 44px;font-family:'Kaisei Decol',serif;
+  font-size:16px;font-weight:700;cursor:pointer;letter-spacing:.04em;
+  box-shadow:0 0 24px rgba(128,64,224,.6);transition:all .2s;
+}
+.btn-retry:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(128,64,224,.9)}
+
+/* ── PARTICLES ── */
+.particle{position:fixed;pointer-events:none;z-index:400;font-size:22px;animation:particleFly .9s ease-out forwards}
+.xp-popup{position:fixed;pointer-events:none;z-index:400;font-family:'Caveat',cursive;font-size:22px;font-weight:700;animation:popupFly 1.1s ease-out forwards}
+.xp-popup.ok{color:var(--ok)}
+.xp-popup.ng{color:var(--ng)}
 </style>
 </head>
 <body>
 
-<div class="badge" id="badge">0 / 0</div>
+<!-- TITLE -->
+<div id="titleScreen">
+  <div class="t-castle">🏰</div>
+  <div class="t-main">数学Ⅱ　魔法学院の試練</div>
+  <div class="t-sub">数学Ⅱ　１学期中間考査対策γ　RPG版</div>
+  <div class="t-story">
+    <b>〜 物語 〜</b><br><br>
+    あなたは<b>魔法学院</b>の新入生。<br>
+    卒業試験は全44問の「数式の試練」だ。<br><br>
+    正解するたびに<b>経験値（EXP）</b>を獲得し、<br>
+    レベルが上がると新たな<b>称号</b>が解放される。<br><br>
+    間違えるたびに<b>HP</b>が減っていく。<br>
+    すべての試練を乗り越え、<b>伝説の賢者</b>を目指せ！
+  </div>
+  <button class="btn-start" onclick="startGame()">⚔️　試練を開始する</button>
+</div>
 
-<div class="hdr">
-  <div class="hdr-title">数学Ⅱ　１学期中間考査対策γ</div>
-  <div class="hdr-sub">全44問・大問１〜10・１問ごとに解説つき ✏️</div>
-  <div class="prog-row">
-    <div class="prog-out"><div class="prog-in" id="pbar"></div></div>
-    <div class="prog-txt" id="ptxt">0 / 44</div>
+<!-- STATUS BAR -->
+<div id="statusBar">
+  <div class="sb-inner">
+    <div class="sb-hero">
+      <div class="sb-avatar" id="sbAvatar">🧙</div>
+      <div>
+        <div class="sb-name" id="sbName">見習い魔法使い</div>
+        <div class="sb-lv"  id="sbLv">Lv.1</div>
+      </div>
+    </div>
+    <div class="sb-bars">
+      <div class="bar-row">
+        <div class="bar-lbl hp">HP</div>
+        <div class="bar-out"><div class="bar-in hp" id="hpBar" style="width:100%"></div></div>
+        <div class="bar-val" id="hpVal">100 / 100</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lbl xp">EXP</div>
+        <div class="bar-out"><div class="bar-in xp" id="xpBar" style="width:0%"></div></div>
+        <div class="bar-val" id="xpVal">0 / 100</div>
+      </div>
+    </div>
+    <div class="sb-score" id="sbScore">✨ 0 / 0</div>
   </div>
 </div>
 
-<div id="root"></div>
+<!-- GAME AREA -->
+<div id="gameArea">
+  <div class="chap-badge" id="chapBadge"><span>📜</span><span id="chapName">１章</span></div>
+  <div class="prog-dots" id="progDots"></div>
+  <div class="q-card" id="qCard">
+    <div class="q-header">
+      <div class="q-num-badge" id="qNumBadge">Q 1 / 44</div>
+      <div class="q-flavor" id="qFlavor">⚔️ 賢者が問う——</div>
+    </div>
+    <div class="q-text" id="qText"></div>
+    <div class="choices" id="choices"></div>
+    <div class="expbox" id="expbox"></div>
+    <button class="btn-next" id="btnNext" onclick="nextQ()"></button>
+  </div>
+</div>
 
-<div class="result" id="result">
-  <div class="r-em" id="rEm">🎉</div>
-  <div class="r-hd">おつかれさまでした！</div>
-  <div class="r-sc" id="rSc">0</div>
-  <div class="r-dn">/ 44 問</div>
-  <div class="r-msg" id="rMsg"></div>
-  <button class="retry" onclick="appInit()">もう一度チャレンジ！</button>
+<!-- LEVEL UP OVERLAY -->
+<div id="lvlOverlay">
+  <div class="lvl-box">
+    <div class="lvl-stars" id="lvlStars">★★★</div>
+    <div class="lvl-up-txt">LEVEL UP !</div>
+    <div class="lvl-num" id="lvlNum">2</div>
+    <div class="lvl-title" id="lvlTitle2">初級魔法使い</div>
+    <div class="lvl-skill" id="lvlSkill">新スキル習得！</div>
+    <button class="btn-lvl-close" onclick="closeLvl()">続ける ▶</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="resultScreen">
+  <div class="res-card">
+    <div class="res-trophy" id="rTrophy">🏆</div>
+    <div class="res-ttl"   id="rTtl">試練クリア！</div>
+    <div class="res-stats">
+      <div class="rstat"><div class="rstat-val" id="rScore">0</div><div class="rstat-lbl">正解数</div></div>
+      <div class="rstat"><div class="rstat-val" id="rLevel">1</div><div class="rstat-lbl">最終 Lv</div></div>
+      <div class="rstat"><div class="rstat-val" id="rXP">0</div><div class="rstat-lbl">獲得 EXP</div></div>
+    </div>
+    <div class="res-rank" id="rRank">🎓 卒業認定</div>
+    <div class="res-msg"  id="rMsg"></div>
+    <button class="btn-retry" onclick="restartGame()">🔄　もう一度挑戦する</button>
+  </div>
 </div>
 
 <script>
-/* =====================================================
-   HTML helpers
-===================================================== */
-// 分数
-function fr(n,d){return`<span class="fr"><span class="n">${n}</span><span class="d">${d}</span></span>`}
-// 根号（√記号＋上線）
-function rt(x){return`<span class="rt"><span class="rt-sym">√</span><span class="rt-body">${x}</span></span>`}
-// インライン数式
-function mi(x){return`<span class="mi">${x}</span>`}
+/* ===================================================
+   LEVEL DEFINITIONS
+=================================================== */
+const LEVELS=[
+  {lv:1, title:"見習い魔法使い",  emoji:"🧙",  need:0,    skill:"魔法学院へ入学！"},
+  {lv:2, title:"初級魔法使い",    emoji:"🧙",  need:100,  skill:"新スキル「展開の呪文」習得！"},
+  {lv:3, title:"中級魔法使い",    emoji:"🔮",  need:220,  skill:"新スキル「因数分解の秘術」習得！"},
+  {lv:4, title:"上級魔法使い",    emoji:"🔮",  need:360,  skill:"新スキル「多項式の剣」習得！"},
+  {lv:5, title:"魔法学士",        emoji:"⚗️",  need:520,  skill:"新スキル「分数式の盾」習得！"},
+  {lv:6, title:"魔法修士",        emoji:"⚗️",  need:700,  skill:"新スキル「平均の波動」習得！"},
+  {lv:7, title:"賢者の弟子",      emoji:"🌟",  need:900,  skill:"新スキル「複素数の目覚め」習得！"},
+  {lv:8, title:"賢者",            emoji:"🌟",  need:1120, skill:"新スキル「虚数の瞳」習得！"},
+  {lv:9, title:"大賢者",          emoji:"💫",  need:1360, skill:"新スキル「方程式の龍」習得！"},
+  {lv:10,title:"伝説の賢者",      emoji:"👑",  need:1620, skill:"最高称号「伝説の賢者」解放！"},
+];
+const CHAP_ICONS=["📜","🔑","⚔️","🛡️","🌊","⚖️","🔮","💎","🌀","🐉"];
+const FLAVORS=[
+  "展開の呪文を唱えよ——","因数分解の秘術を示せ——","商と余りを見極めよ——",
+  "乗除の迷宮を切り開け——","加減の渦流を渡り切れ——","平均の天秤を均衡させよ——",
+  "複素数の仮面を見抜け——","複素数の霧の中で演算せよ——","共役の呪文で有理化せよ——",
+  "虚数の龍の問いに答えよ——",
+];
 
-/* =====================================================
-   問題データ（44問）
-===================================================== */
+/* ===================================================
+   QUESTION DATA — MathJax \( \) 記法
+   分数は \dfrac、根号は \sqrt、累乗は ^
+=================================================== */
 const SECTIONS=[
 
 /* ━ 大問１ 展開 ━ */
-{title:"１　次の式を展開せよ。",qs:[
-{q:`${mi("(x＋3)³")} を展開せよ。`,
- cs:[{t:`${mi("x³＋9x²＋27x＋27")}`,ok:true},
-     {t:`${mi("x³＋3x²＋9x＋27")}`,ok:false},
-     {t:`${mi("x³＋9x²＋27x＋9")}`,ok:false},
-     {t:`${mi("x³＋6x²＋12x＋8")}`,ok:false}],
- exp:`(a＋b)³＝a³＋3a²b＋3ab²＋b³ に a＝x、b＝3 を代入。<br>3a²b＝9x²、3ab²＝27x、b³＝27。答え：<b>x³＋9x²＋27x＋27</b>`},
-
-{q:`${mi("(x－4)³")} を展開せよ。`,
- cs:[{t:`${mi("x³－12x²＋48x－64")}`,ok:true},
-     {t:`${mi("x³＋12x²－48x＋64")}`,ok:false},
-     {t:`${mi("x³－12x²＋48x＋64")}`,ok:false},
-     {t:`${mi("x³－4x²＋16x－64")}`,ok:false}],
- exp:`(a－b)³＝a³－3a²b＋3ab²－b³ に b＝4。<br>符号に注意！答え：<b>x³－12x²＋48x－64</b>`},
-
-{q:`${mi("(x＋2y)³")} を展開せよ。`,
- cs:[{t:`${mi("x³＋6x²y＋12xy²＋8y³")}`,ok:true},
-     {t:`${mi("x³＋2x²y＋4xy²＋8y³")}`,ok:false},
-     {t:`${mi("x³＋6x²y＋12xy²＋6y³")}`,ok:false},
-     {t:`${mi("x³＋8x²y＋12xy²＋8y³")}`,ok:false}],
- exp:`b＝2y として展開。3a²b＝6x²y、3ab²＝12xy²、b³＝8y³。<br>答え：<b>x³＋6x²y＋12xy²＋8y³</b>`},
-
-{q:`${mi("(x－3y)³")} を展開せよ。`,
- cs:[{t:`${mi("x³－9x²y＋27xy²－27y³")}`,ok:true},
-     {t:`${mi("x³＋9x²y－27xy²＋27y³")}`,ok:false},
-     {t:`${mi("x³－3x²y＋9xy²－27y³")}`,ok:false},
-     {t:`${mi("x³－9x²y＋27xy²＋27y³")}`,ok:false}],
- exp:`b＝3y として (a－b)³ の公式。答え：<b>x³－9x²y＋27xy²－27y³</b>`},
+{ch:"１章　展開の呪文",qs:[
+{q:`次の式を展開せよ。<br>\\( (x+3)^3 \\)`,
+ cs:[{t:`\\( x^3+9x^2+27x+27 \\)`,ok:true},{t:`\\( x^3+3x^2+9x+27 \\)`,ok:false},{t:`\\( x^3+9x^2+27x+9 \\)`,ok:false},{t:`\\( x^3+6x^2+12x+8 \\)`,ok:false}],
+ ex:`\\((a+b)^3=a^3+3a^2b+3ab^2+b^3\\) に \\(a=x,\\ b=3\\) を代入。<br>\\(3a^2b=9x^2,\\ 3ab^2=27x,\\ b^3=27\\)<br>答え：\\( x^3+9x^2+27x+27 \\)`},
+{q:`次の式を展開せよ。<br>\\( (x-4)^3 \\)`,
+ cs:[{t:`\\( x^3-12x^2+48x-64 \\)`,ok:true},{t:`\\( x^3+12x^2-48x+64 \\)`,ok:false},{t:`\\( x^3-12x^2+48x+64 \\)`,ok:false},{t:`\\( x^3-4x^2+16x-64 \\)`,ok:false}],
+ ex:`\\((a-b)^3=a^3-3a^2b+3ab^2-b^3\\) に \\(b=4\\)。符号に注意！<br>答え：\\( x^3-12x^2+48x-64 \\)`},
+{q:`次の式を展開せよ。<br>\\( (x+2y)^3 \\)`,
+ cs:[{t:`\\( x^3+6x^2y+12xy^2+8y^3 \\)`,ok:true},{t:`\\( x^3+2x^2y+4xy^2+8y^3 \\)`,ok:false},{t:`\\( x^3+6x^2y+12xy^2+6y^3 \\)`,ok:false},{t:`\\( x^3+8x^2y+12xy^2+8y^3 \\)`,ok:false}],
+ ex:`\\(b=2y\\) として展開。\\(3a^2b=6x^2y,\\ 3ab^2=12xy^2,\\ b^3=8y^3\\)<br>答え：\\( x^3+6x^2y+12xy^2+8y^3 \\)`},
+{q:`次の式を展開せよ。<br>\\( (x-3y)^3 \\)`,
+ cs:[{t:`\\( x^3-9x^2y+27xy^2-27y^3 \\)`,ok:true},{t:`\\( x^3+9x^2y-27xy^2+27y^3 \\)`,ok:false},{t:`\\( x^3-3x^2y+9xy^2-27y^3 \\)`,ok:false},{t:`\\( x^3-9x^2y+27xy^2+27y^3 \\)`,ok:false}],
+ ex:`\\(b=3y\\) で \\((a-b)^3\\) の公式。<br>答え：\\( x^3-9x^2y+27xy^2-27y^3 \\)`},
 ]},
 
 /* ━ 大問２ 因数分解 ━ */
-{title:"２　次の式を因数分解せよ。",qs:[
-{q:`${mi("x³＋125")} を因数分解せよ。`,
- cs:[{t:`${mi("(x＋5)(x²－5x＋25)")}`,ok:true},
-     {t:`${mi("(x＋5)(x²＋5x＋25)")}`,ok:false},
-     {t:`${mi("(x－5)(x²＋5x＋25)")}`,ok:false},
-     {t:`${mi("(x＋5)³")}`,ok:false}],
- exp:`a³＋b³＝(a＋b)(a²－ab＋b²) に a＝x、b＝5。<br>中の符号は「－＋」！答え：<b>(x＋5)(x²－5x＋25)</b>`},
-
-{q:`${mi("x³－y³")} を因数分解せよ。`,
- cs:[{t:`${mi("(x－y)(x²＋xy＋y²)")}`,ok:true},
-     {t:`${mi("(x－y)(x²－xy＋y²)")}`,ok:false},
-     {t:`${mi("(x＋y)(x²－xy＋y²)")}`,ok:false},
-     {t:`${mi("(x－y)³")}`,ok:false}],
- exp:`a³－b³＝(a－b)(a²＋ab＋b²)。中の符号は「＋＋」！<br>答え：<b>(x－y)(x²＋xy＋y²)</b>`},
-
-{q:`${mi("x³＋1000")} を因数分解せよ。`,
- cs:[{t:`${mi("(x＋10)(x²－10x＋100)")}`,ok:true},
-     {t:`${mi("(x＋10)(x²＋10x＋100)")}`,ok:false},
-     {t:`${mi("(x－10)(x²＋10x＋100)")}`,ok:false},
-     {t:`${mi("(x＋10)³")}`,ok:false}],
- exp:`1000＝10³ なので b＝10 で a³＋b³ の公式。<br>答え：<b>(x＋10)(x²－10x＋100)</b>`},
-
-{q:`${mi("8x³－1")} を因数分解せよ。`,
- cs:[{t:`${mi("(2x－1)(4x²＋2x＋1)")}`,ok:true},
-     {t:`${mi("(2x＋1)(4x²－2x＋1)")}`,ok:false},
-     {t:`${mi("(2x－1)(4x²－2x＋1)")}`,ok:false},
-     {t:`${mi("(2x－1)³")}`,ok:false}],
- exp:`8x³＝(2x)³ なので a＝2x、b＝1 で a³－b³ の公式。<br>答え：<b>(2x－1)(4x²＋2x＋1)</b>`},
+{ch:"２章　因数分解の秘術",qs:[
+{q:`次の式を因数分解せよ。<br>\\( x^3+125 \\)`,
+ cs:[{t:`\\( (x+5)(x^2-5x+25) \\)`,ok:true},{t:`\\( (x+5)(x^2+5x+25) \\)`,ok:false},{t:`\\( (x-5)(x^2+5x+25) \\)`,ok:false},{t:`\\( (x+5)^3 \\)`,ok:false}],
+ ex:`\\(a^3+b^3=(a+b)(a^2-ab+b^2)\\) に \\(a=x,b=5\\)。<br>中の符号は「−＋」！<br>答え：\\( (x+5)(x^2-5x+25) \\)`},
+{q:`次の式を因数分解せよ。<br>\\( x^3-y^3 \\)`,
+ cs:[{t:`\\( (x-y)(x^2+xy+y^2) \\)`,ok:true},{t:`\\( (x-y)(x^2-xy+y^2) \\)`,ok:false},{t:`\\( (x+y)(x^2-xy+y^2) \\)`,ok:false},{t:`\\( (x-y)^3 \\)`,ok:false}],
+ ex:`\\(a^3-b^3=(a-b)(a^2+ab+b^2)\\)。中の符号は「＋＋」！<br>答え：\\( (x-y)(x^2+xy+y^2) \\)`},
+{q:`次の式を因数分解せよ。<br>\\( x^3+1000 \\)`,
+ cs:[{t:`\\( (x+10)(x^2-10x+100) \\)`,ok:true},{t:`\\( (x+10)(x^2+10x+100) \\)`,ok:false},{t:`\\( (x-10)(x^2+10x+100) \\)`,ok:false},{t:`\\( (x+10)^3 \\)`,ok:false}],
+ ex:`\\(1000=10^3\\) なので \\(b=10\\) で \\(a^3+b^3\\) の公式。<br>答え：\\( (x+10)(x^2-10x+100) \\)`},
+{q:`次の式を因数分解せよ。<br>\\( 8x^3-1 \\)`,
+ cs:[{t:`\\( (2x-1)(4x^2+2x+1) \\)`,ok:true},{t:`\\( (2x+1)(4x^2-2x+1) \\)`,ok:false},{t:`\\( (2x-1)(4x^2-2x+1) \\)`,ok:false},{t:`\\( (2x-1)^3 \\)`,ok:false}],
+ ex:`\\(8x^3=(2x)^3\\) なので \\(a=2x,b=1\\) で \\(a^3-b^3\\) の公式。<br>答え：\\( (2x-1)(4x^2+2x+1) \\)`},
 ]},
 
 /* ━ 大問３ 除法 ━ */
-{title:"３　次の多項式 A, B について、A を B で割った商と余りを求めよ。",qs:[
-{q:`${mi("A＝x²－2x－1")}、${mi("B＝x＋1")} のとき、商と余りは？`,
- cs:[{t:`商 ${mi("x－3")}、余り ${mi("2")}`,ok:true},
-     {t:`商 ${mi("x＋3")}、余り ${mi("2")}`,ok:false},
-     {t:`商 ${mi("x－3")}、余り ${mi("－2")}`,ok:false},
-     {t:`商 ${mi("x－1")}、余り ${mi("0")}`,ok:false}],
- exp:`x²－2x－1 を x＋1 で割る。<br>x²÷x＝x → x(x＋1)を引いて－3x－1。<br>－3x÷x＝－3 → (－3)(x＋1)を引いて余り 2。<br>答え：<b>商 x－3、余り 2</b>`},
-
-{q:`${mi("A＝x²＋5x＋5")}、${mi("B＝x＋2")} のとき、商と余りは？`,
- cs:[{t:`商 ${mi("x＋3")}、余り ${mi("－1")}`,ok:true},
-     {t:`商 ${mi("x＋3")}、余り ${mi("1")}`,ok:false},
-     {t:`商 ${mi("x－3")}、余り ${mi("－1")}`,ok:false},
-     {t:`商 ${mi("x＋2")}、余り ${mi("0")}`,ok:false}],
- exp:`商 x＋3、(x＋2)(x＋3)＝x²＋5x＋6 を引いて余り－1。<br>答え：<b>商 x＋3、余り－1</b>`},
-
-{q:`${mi("A＝2x²－3x＋1")}、${mi("B＝x－1")} のとき、商と余りは？`,
- cs:[{t:`商 ${mi("2x－1")}、余り ${mi("0")}`,ok:true},
-     {t:`商 ${mi("2x＋1")}、余り ${mi("0")}`,ok:false},
-     {t:`商 ${mi("2x－1")}、余り ${mi("2")}`,ok:false},
-     {t:`商 ${mi("x－1")}、余り ${mi("0")}`,ok:false}],
- exp:`(x－1)(2x－1)＝2x²－3x＋1 なので割り切れる。<br>答え：<b>商 2x－1、余り 0</b>`},
-
-{q:`${mi("A＝x³－2x²＋3x＋12")}、${mi("B＝x＋2")} のとき、商と余りは？`,
- cs:[{t:`商 ${mi("x²－4x＋11")}、余り ${mi("－10")}`,ok:true},
-     {t:`商 ${mi("x²＋4x＋11")}、余り ${mi("10")}`,ok:false},
-     {t:`商 ${mi("x²－4x＋11")}、余り ${mi("10")}`,ok:false},
-     {t:`商 ${mi("x²－4x－11")}、余り ${mi("－10")}`,ok:false}],
- exp:`順に割ると商 x²－4x＋11、11(x＋2)＝11x＋22 を引いて余り－10。<br>答え：<b>商 x²－4x＋11、余り－10</b>`},
+{ch:"３章　多項式の剣",qs:[
+{q:`\\(A=x^2-2x-1\\)、\\(B=x+1\\) のとき<br>A を B で割った商と余りを求めよ。`,
+ cs:[{t:`商 \\(x-3\\)、余り \\(2\\)`,ok:true},{t:`商 \\(x+3\\)、余り \\(2\\)`,ok:false},{t:`商 \\(x-3\\)、余り \\(-2\\)`,ok:false},{t:`商 \\(x-1\\)、余り \\(0\\)`,ok:false}],
+ ex:`\\(x^2÷x=x\\) → \\(x(x+1)\\) を引いて \\(-3x-1\\)。<br>\\(-3x÷x=-3\\) → \\((-3)(x+1)\\) を引いて余り \\(2\\)。<br>答え：商 \\(x-3\\)、余り \\(2\\)`},
+{q:`\\(A=x^2+5x+5\\)、\\(B=x+2\\) のとき<br>A を B で割った商と余りを求めよ。`,
+ cs:[{t:`商 \\(x+3\\)、余り \\(-1\\)`,ok:true},{t:`商 \\(x+3\\)、余り \\(1\\)`,ok:false},{t:`商 \\(x-3\\)、余り \\(-1\\)`,ok:false},{t:`商 \\(x+2\\)、余り \\(0\\)`,ok:false}],
+ ex:`商 \\(x+3\\)、\\((x+2)(x+3)=x^2+5x+6\\) を引いて余り \\(-1\\)。<br>答え：商 \\(x+3\\)、余り \\(-1\\)`},
+{q:`\\(A=2x^2-3x+1\\)、\\(B=x-1\\) のとき<br>A を B で割った商と余りを求めよ。`,
+ cs:[{t:`商 \\(2x-1\\)、余り \\(0\\)`,ok:true},{t:`商 \\(2x+1\\)、余り \\(0\\)`,ok:false},{t:`商 \\(2x-1\\)、余り \\(2\\)`,ok:false},{t:`商 \\(x-1\\)、余り \\(0\\)`,ok:false}],
+ ex:`\\((x-1)(2x-1)=2x^2-3x+1\\) → 割り切れる。<br>答え：商 \\(2x-1\\)、余り \\(0\\)`},
+{q:`\\(A=x^3-2x^2+3x+12\\)、\\(B=x+2\\) のとき<br>A を B で割った商と余りを求めよ。`,
+ cs:[{t:`商 \\(x^2-4x+11\\)、余り \\(-10\\)`,ok:true},{t:`商 \\(x^2+4x+11\\)、余り \\(10\\)`,ok:false},{t:`商 \\(x^2-4x+11\\)、余り \\(10\\)`,ok:false},{t:`商 \\(x^2-4x-11\\)、余り \\(-10\\)`,ok:false}],
+ ex:`順に割ると商 \\(x^2-4x+11\\)、\\(11(x+2)=11x+22\\) を引いて余り \\(-10\\)。<br>答え：商 \\(x^2-4x+11\\)、余り \\(-10\\)`},
 ]},
 
 /* ━ 大問４ 分数式の乗除 ━ */
-{title:"４　次の計算をせよ。（分数式の乗除）",qs:[
-{q:`${fr("x²","x＋2")} × ${fr("x＋2","x²－4x")} を計算せよ。`,
- cs:[{t:fr("x","x－4"),ok:true},
-     {t:fr("x＋2","x－4"),ok:false},
-     {t:fr("x","x＋4"),ok:false},
-     {t:fr("1","x－4"),ok:false}],
- exp:`x²－4x＝x(x－4) に分解してから約分。<br>${fr("x²","x＋2")}×${fr("x＋2","x(x－4)")}＝<b>${fr("x","x－4")}</b>`},
-
-{q:`${fr("x＋3","x²－x－6")} × ${fr("x²＋4x＋4","x²＋5x＋6")} を計算せよ。`,
- cs:[{t:fr("1","x－3"),ok:true},
-     {t:fr("x＋2","x－3"),ok:false},
-     {t:fr("1","x＋3"),ok:false},
-     {t:fr("x＋2","x＋3"),ok:false}],
- exp:`各式を因数分解してから約分。<br>x²－x－6＝(x＋2)(x－3)、x²＋4x＋4＝(x＋2)²、x²＋5x＋6＝(x＋2)(x＋3)。<br>答え：<b>${fr("1","x－3")}</b>`},
-
-{q:`${fr("x－3","x＋1")} ÷ ${fr("1","x²＋x")} を計算せよ。`,
- cs:[{t:`${mi("x(x－3)")}`,ok:true},
-     {t:fr("x－3","x(x＋1)"),ok:false},
-     {t:`${mi("(x－3)(x＋1)")}`,ok:false},
-     {t:fr("x－3","x＋1"),ok:false}],
- exp:`÷${fr("1","x²＋x")} は ×(x²＋x) と同じ。x²＋x＝x(x＋1) なので<br>${fr("x－3","x＋1")}×x(x＋1)＝<b>x(x－3)</b>`},
-
-{q:`${fr("x²－1","x²－3x＋2")} ÷ ${fr("x²＋x","x－4")} を計算せよ。`,
- cs:[{t:fr("x－4","x(x－2)"),ok:true},
-     {t:fr("x＋1","x－2"),ok:false},
-     {t:fr("x－4","x＋1"),ok:false},
-     {t:fr("(x＋1)(x－4)","x(x－2)"),ok:false}],
- exp:`x²－1＝(x＋1)(x－1)、x²－3x＋2＝(x－1)(x－2)、x²＋x＝x(x＋1)。逆数をかけて約分。<br>答え：<b>${fr("x－4","x(x－2)")}</b>`},
+{ch:"４章　分数式の迷宮（乗除）",qs:[
+{q:`次の計算をせよ。<br>\\( \\dfrac{x^2}{x+2} \\times \\dfrac{x+2}{x^2-4x} \\)`,
+ cs:[{t:`\\( \\dfrac{x}{x-4} \\)`,ok:true},{t:`\\( \\dfrac{x+2}{x-4} \\)`,ok:false},{t:`\\( \\dfrac{x}{x+4} \\)`,ok:false},{t:`\\( \\dfrac{1}{x-4} \\)`,ok:false}],
+ ex:`\\(x^2-4x=x(x-4)\\) に分解してから約分。<br>答え：\\( \\dfrac{x}{x-4} \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{x+3}{x^2-x-6} \\times \\dfrac{x^2+4x+4}{x^2+5x+6} \\)`,
+ cs:[{t:`\\( \\dfrac{1}{x-3} \\)`,ok:true},{t:`\\( \\dfrac{x+2}{x-3} \\)`,ok:false},{t:`\\( \\dfrac{1}{x+3} \\)`,ok:false},{t:`\\( \\dfrac{x+2}{x+3} \\)`,ok:false}],
+ ex:`各式を因数分解してから約分。<br>\\(x^2-x-6=(x+2)(x-3),\\ x^2+4x+4=(x+2)^2,\\ x^2+5x+6=(x+2)(x+3)\\)<br>答え：\\( \\dfrac{1}{x-3} \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{x-3}{x+1} \\div \\dfrac{1}{x^2+x} \\)`,
+ cs:[{t:`\\( x(x-3) \\)`,ok:true},{t:`\\( \\dfrac{x-3}{x(x+1)} \\)`,ok:false},{t:`\\( (x-3)(x+1) \\)`,ok:false},{t:`\\( \\dfrac{x-3}{x+1} \\)`,ok:false}],
+ ex:`逆数をかける。\\(x^2+x=x(x+1)\\) なので<br>\\(\\dfrac{x-3}{x+1} \\times x(x+1)\\) ＝ 答え：\\( x(x-3) \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{x^2-1}{x^2-3x+2} \\div \\dfrac{x^2+x}{x-4} \\)`,
+ cs:[{t:`\\( \\dfrac{x-4}{x(x-2)} \\)`,ok:true},{t:`\\( \\dfrac{x+1}{x-2} \\)`,ok:false},{t:`\\( \\dfrac{x-4}{x+1} \\)`,ok:false},{t:`\\( \\dfrac{(x+1)(x-4)}{x(x-2)} \\)`,ok:false}],
+ ex:`\\(x^2-1=(x+1)(x-1),\\ x^2-3x+2=(x-1)(x-2),\\ x^2+x=x(x+1)\\)<br>逆数をかけて約分。答え：\\( \\dfrac{x-4}{x(x-2)} \\)`},
 ]},
 
 /* ━ 大問５ 分数式の加減 ━ */
-{title:"５　次の計算をせよ。（分数式の加減）",qs:[
-{q:`${fr("2","3x")} ＋ ${fr("5","3x")} を計算せよ。`,
- cs:[{t:fr("7","3x"),ok:true},
-     {t:fr("7","6x"),ok:false},
-     {t:fr("7","9x²"),ok:false},
-     {t:fr("10","3x"),ok:false}],
- exp:`分母が同じなので分子を足す。2＋5＝7。答え：<b>${fr("7","3x")}</b>`},
-
-{q:`${fr("4x＋1","3x－1")} － ${fr("2x","3x－1")} を計算せよ。`,
- cs:[{t:fr("2x＋1","3x－1"),ok:true},
-     {t:fr("2x－1","3x－1"),ok:false},
-     {t:fr("6x＋1","3x－1"),ok:false},
-     {t:fr("2x＋1","6x－2"),ok:false}],
- exp:`分子：(4x＋1)－2x＝2x＋1。答え：<b>${fr("2x＋1","3x－1")}</b>`},
-
-{q:`${fr("x＋1","x＋3")} ＋ ${fr("2x＋8","x＋3")} を計算せよ。`,
- cs:[{t:`3`,ok:true},
-     {t:fr("3x＋9","x＋3"),ok:false},
-     {t:fr("3","x＋3"),ok:false},
-     {t:fr("3x＋9","(x＋3)²"),ok:false}],
- exp:`分子：(x＋1)＋(2x＋8)＝3x＋9＝3(x＋3)。<br>${fr("3(x＋3)","x＋3")}＝<b>3</b>　約分を忘れずに！`},
-
-{q:`${fr("2x＋9","x－5")} － ${fr("－3x＋4","x－5")} を計算せよ。`,
- cs:[{t:fr("5x＋5","x－5"),ok:true},
-     {t:fr("5x－5","x－5"),ok:false},
-     {t:fr("－x＋13","x－5"),ok:false},
-     {t:fr("5(x＋1)","x＋5"),ok:false}],
- exp:`分子：(2x＋9)－(－3x＋4)＝5x＋5。答え：<b>${fr("5x＋5","x－5")}</b>`},
-
-{q:`${fr("x²－4","x＋1")} ＋ ${fr("3","x＋1")} を計算せよ。`,
- cs:[{t:`${mi("x－1")}`,ok:true},
-     {t:`${mi("x＋1")}`,ok:false},
-     {t:fr("x²－1","x＋1"),ok:false},
-     {t:fr("x²＋3","x＋1"),ok:false}],
- exp:`分子：(x²－4)＋3＝x²－1＝(x＋1)(x－1)。<br>${fr("(x＋1)(x－1)","x＋1")}＝<b>x－1</b>`},
-
-{q:`${fr("x²－2","x²＋2x")} － ${fr("2","x²＋2x")} を計算せよ。`,
- cs:[{t:fr("x－2","x"),ok:true},
-     {t:fr("x＋2","x"),ok:false},
-     {t:fr("x－2","x＋2"),ok:false},
-     {t:fr("x²－4","x²＋2x"),ok:false}],
- exp:`分子：(x²－2)－2＝x²－4＝(x＋2)(x－2)。分母：x(x＋2)。<br>約分して <b>${fr("x－2","x")}</b>`},
+{ch:"５章　分数式の波（加減）",qs:[
+{q:`次の計算をせよ。<br>\\( \\dfrac{2}{3x} + \\dfrac{5}{3x} \\)`,
+ cs:[{t:`\\( \\dfrac{7}{3x} \\)`,ok:true},{t:`\\( \\dfrac{7}{6x} \\)`,ok:false},{t:`\\( \\dfrac{7}{9x^2} \\)`,ok:false},{t:`\\( \\dfrac{10}{3x} \\)`,ok:false}],
+ ex:`分母が同じなので分子を足す。\\(2+5=7\\)<br>答え：\\( \\dfrac{7}{3x} \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{4x+1}{3x-1} - \\dfrac{2x}{3x-1} \\)`,
+ cs:[{t:`\\( \\dfrac{2x+1}{3x-1} \\)`,ok:true},{t:`\\( \\dfrac{2x-1}{3x-1} \\)`,ok:false},{t:`\\( \\dfrac{6x+1}{3x-1} \\)`,ok:false},{t:`\\( \\dfrac{2x+1}{6x-2} \\)`,ok:false}],
+ ex:`分子：\\((4x+1)-2x=2x+1\\)<br>答え：\\( \\dfrac{2x+1}{3x-1} \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{x+1}{x+3} + \\dfrac{2x+8}{x+3} \\)`,
+ cs:[{t:`\\( 3 \\)`,ok:true},{t:`\\( \\dfrac{3x+9}{x+3} \\)`,ok:false},{t:`\\( \\dfrac{3}{x+3} \\)`,ok:false},{t:`\\( \\dfrac{3x+9}{(x+3)^2} \\)`,ok:false}],
+ ex:`分子：\\(3x+9=3(x+3)\\) → 約分して<br>答え：\\( 3 \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{2x+9}{x-5} - \\dfrac{-3x+4}{x-5} \\)`,
+ cs:[{t:`\\( \\dfrac{5x+5}{x-5} \\)`,ok:true},{t:`\\( \\dfrac{5x-5}{x-5} \\)`,ok:false},{t:`\\( \\dfrac{-x+13}{x-5} \\)`,ok:false},{t:`\\( \\dfrac{5(x+1)}{x+5} \\)`,ok:false}],
+ ex:`分子：\\((2x+9)-(-3x+4)=5x+5\\)<br>答え：\\( \\dfrac{5x+5}{x-5} \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{x^2-4}{x+1} + \\dfrac{3}{x+1} \\)`,
+ cs:[{t:`\\( x-1 \\)`,ok:true},{t:`\\( x+1 \\)`,ok:false},{t:`\\( \\dfrac{x^2-1}{x+1} \\)`,ok:false},{t:`\\( \\dfrac{x^2+3}{x+1} \\)`,ok:false}],
+ ex:`分子：\\(x^2-1=(x+1)(x-1)\\) → 約分して<br>答え：\\( x-1 \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{x^2-2}{x^2+2x} - \\dfrac{2}{x^2+2x} \\)`,
+ cs:[{t:`\\( \\dfrac{x-2}{x} \\)`,ok:true},{t:`\\( \\dfrac{x+2}{x} \\)`,ok:false},{t:`\\( \\dfrac{x-2}{x+2} \\)`,ok:false},{t:`\\( \\dfrac{x^2-4}{x^2+2x} \\)`,ok:false}],
+ ex:`分子：\\(x^2-4=(x+2)(x-2)\\)、分母：\\(x(x+2)\\) → 約分して<br>答え：\\( \\dfrac{x-2}{x} \\)`},
 ]},
 
 /* ━ 大問６ 相加・相乗平均 ━ */
-{title:"６　次の２数の相加平均と相乗平均をそれぞれ求めよ。",qs:[
+{ch:"６章　平均の天秤",qs:[
 {q:`２と８の相加平均と相乗平均を求めよ。`,
- cs:[{t:`相加平均 5、相乗平均 4`,ok:true},
-     {t:`相加平均 4、相乗平均 5`,ok:false},
-     {t:`相加平均 5、相乗平均 8`,ok:false},
-     {t:`相加平均 10、相乗平均 4`,ok:false}],
- exp:`相加平均：${fr("2＋8","2")}＝5<br>相乗平均：${rt("2×8")}＝${rt("16")}＝4<br>答え：<b>相加平均 5、相乗平均 4</b>`},
-
+ cs:[{t:`相加平均 \\(5\\)、相乗平均 \\(4\\)`,ok:true},{t:`相加平均 \\(4\\)、相乗平均 \\(5\\)`,ok:false},{t:`相加平均 \\(5\\)、相乗平均 \\(8\\)`,ok:false},{t:`相加平均 \\(10\\)、相乗平均 \\(4\\)`,ok:false}],
+ ex:`相加平均：\\(\\dfrac{2+8}{2}=5\\)<br>相乗平均：\\(\\sqrt{2 \\times 8}=\\sqrt{16}=4\\)<br>答え：相加平均 \\(5\\)、相乗平均 \\(4\\)`},
 {q:`３と24の相加平均と相乗平均を求めよ。`,
- cs:[{t:`相加平均 ${fr("27","2")}、相乗平均 6${rt("2")}`,ok:true},
-     {t:`相加平均 ${fr("27","2")}、相乗平均 6`,ok:false},
-     {t:`相加平均 12、相乗平均 6${rt("2")}`,ok:false},
-     {t:`相加平均 ${fr("27","2")}、相乗平均 3${rt("2")}`,ok:false}],
- exp:`相加平均：${fr("3＋24","2")}＝${fr("27","2")}<br>相乗平均：${rt("3×24")}＝${rt("72")}＝${rt("36×2")}＝6${rt("2")}<br>答え：<b>相加平均 27/2、相乗平均 6√2</b>`},
-
+ cs:[{t:`相加平均 \\(\\dfrac{27}{2}\\)、相乗平均 \\(6\\sqrt{2}\\)`,ok:true},{t:`相加平均 \\(\\dfrac{27}{2}\\)、相乗平均 \\(6\\)`,ok:false},{t:`相加平均 \\(12\\)、相乗平均 \\(6\\sqrt{2}\\)`,ok:false},{t:`相加平均 \\(\\dfrac{27}{2}\\)、相乗平均 \\(3\\sqrt{2}\\)`,ok:false}],
+ ex:`相加平均：\\(\\dfrac{3+24}{2}=\\dfrac{27}{2}\\)<br>相乗平均：\\(\\sqrt{3 \\times 24}=\\sqrt{72}=6\\sqrt{2}\\)<br>答え：相加平均 \\(\\dfrac{27}{2}\\)、相乗平均 \\(6\\sqrt{2}\\)`},
 {q:`12と６の相加平均と相乗平均を求めよ。`,
- cs:[{t:`相加平均 9、相乗平均 6${rt("2")}`,ok:true},
-     {t:`相加平均 9、相乗平均 6`,ok:false},
-     {t:`相加平均 9、相乗平均 3${rt("2")}`,ok:false},
-     {t:`相加平均 6、相乗平均 9`,ok:false}],
- exp:`相加平均：${fr("12＋6","2")}＝9<br>相乗平均：${rt("12×6")}＝${rt("72")}＝6${rt("2")}<br>答え：<b>相加平均 9、相乗平均 6√2</b>`},
-
+ cs:[{t:`相加平均 \\(9\\)、相乗平均 \\(6\\sqrt{2}\\)`,ok:true},{t:`相加平均 \\(9\\)、相乗平均 \\(6\\)`,ok:false},{t:`相加平均 \\(9\\)、相乗平均 \\(3\\sqrt{2}\\)`,ok:false},{t:`相加平均 \\(6\\)、相乗平均 \\(9\\)`,ok:false}],
+ ex:`相加平均：\\(\\dfrac{12+6}{2}=9\\)<br>相乗平均：\\(\\sqrt{12 \\times 6}=\\sqrt{72}=6\\sqrt{2}\\)<br>答え：相加平均 \\(9\\)、相乗平均 \\(6\\sqrt{2}\\)`},
 {q:`８と40の相加平均と相乗平均を求めよ。`,
- cs:[{t:`相加平均 24、相乗平均 8${rt("5")}`,ok:true},
-     {t:`相加平均 24、相乗平均 4${rt("5")}`,ok:false},
-     {t:`相加平均 20、相乗平均 8${rt("5")}`,ok:false},
-     {t:`相加平均 24、相乗平均 16`,ok:false}],
- exp:`相加平均：${fr("8＋40","2")}＝24<br>相乗平均：${rt("8×40")}＝${rt("320")}＝${rt("64×5")}＝8${rt("5")}<br>答え：<b>相加平均 24、相乗平均 8√5</b>`},
+ cs:[{t:`相加平均 \\(24\\)、相乗平均 \\(8\\sqrt{5}\\)`,ok:true},{t:`相加平均 \\(24\\)、相乗平均 \\(4\\sqrt{5}\\)`,ok:false},{t:`相加平均 \\(20\\)、相乗平均 \\(8\\sqrt{5}\\)`,ok:false},{t:`相加平均 \\(24\\)、相乗平均 \\(16\\)`,ok:false}],
+ ex:`相加平均：\\(\\dfrac{8+40}{2}=24\\)<br>相乗平均：\\(\\sqrt{8 \\times 40}=\\sqrt{320}=8\\sqrt{5}\\)<br>答え：相加平均 \\(24\\)、相乗平均 \\(8\\sqrt{5}\\)`},
 ]},
 
 /* ━ 大問７ 複素数の実数条件 ━ */
-{title:"７　次の等式を満たす実数 x, y の値を求めよ。",qs:[
-{q:`${mi("x＋3i＝")}${rt("3")}${mi("＋yi")} を満たす実数 x, y の値は？`,
- cs:[{t:`${mi("x＝")}${rt("3")}${mi("、y＝3")}`,ok:true},
-     {t:`${mi("x＝3、y＝")}${rt("3")}`,ok:false},
-     {t:`${mi("x＝")}${rt("3")}${mi("、y＝－3")}`,ok:false},
-     {t:`${mi("x＝－")}${rt("3")}${mi("、y＝3")}`,ok:false}],
- exp:`実部どうし・虚部どうしを等しくおく。<br>実部：x＝${rt("3")}　虚部：3＝y<br>答え：<b>x＝√3、y＝3</b>`},
-
-{q:`${mi("(x＋2)＋(y－1)i＝1＋3i")} を満たす実数 x, y の値は？`,
- cs:[{t:`${mi("x＝－1、y＝4")}`,ok:true},
-     {t:`${mi("x＝1、y＝3")}`,ok:false},
-     {t:`${mi("x＝－1、y＝－4")}`,ok:false},
-     {t:`${mi("x＝1、y＝4")}`,ok:false}],
- exp:`実部：x＋2＝1 → x＝－1<br>虚部：y－1＝3 → y＝4<br>答え：<b>x＝－1、y＝4</b>`},
-
-{q:`${mi("x＋yi＝－")}${rt("5")}${mi("i")} を満たす実数 x, y の値は？`,
- cs:[{t:`${mi("x＝0、y＝－")}${rt("5")}`,ok:true},
-     {t:`${mi("x＝")}${rt("5")}${mi("、y＝0")}`,ok:false},
-     {t:`${mi("x＝0、y＝")}${rt("5")}`,ok:false},
-     {t:`${mi("x＝－")}${rt("5")}${mi("、y＝0")}`,ok:false}],
- exp:`右辺：0＋(－${rt("5")})i に分解。<br>実部：x＝0　虚部：y＝－${rt("5")}<br>答え：<b>x＝0、y＝－√5</b>`},
-
-{q:`${mi("(x＋1)＋(y－2)i＝－3")} を満たす実数 x, y の値は？`,
- cs:[{t:`${mi("x＝－4、y＝2")}`,ok:true},
-     {t:`${mi("x＝－4、y＝－2")}`,ok:false},
-     {t:`${mi("x＝4、y＝2")}`,ok:false},
-     {t:`${mi("x＝2、y＝－4")}`,ok:false}],
- exp:`右辺 －3＝－3＋0·i。<br>実部：x＋1＝－3 → x＝－4　虚部：y－2＝0 → y＝2<br>答え：<b>x＝－4、y＝2</b>`},
+{ch:"７章　複素数の目覚め",qs:[
+{q:`次の等式を満たす実数 \\(x, y\\) の値を求めよ。<br>\\( x+3i = \\sqrt{3}+yi \\)`,
+ cs:[{t:`\\( x=\\sqrt{3},\\ y=3 \\)`,ok:true},{t:`\\( x=3,\\ y=\\sqrt{3} \\)`,ok:false},{t:`\\( x=\\sqrt{3},\\ y=-3 \\)`,ok:false},{t:`\\( x=-\\sqrt{3},\\ y=3 \\)`,ok:false}],
+ ex:`実部どうし・虚部どうしを等しくおく。<br>実部：\\(x=\\sqrt{3}\\)　虚部：\\(3=y\\)<br>答え：\\(x=\\sqrt{3},\\ y=3\\)`},
+{q:`次の等式を満たす実数 \\(x, y\\) の値を求めよ。<br>\\( (x+2)+(y-1)i = 1+3i \\)`,
+ cs:[{t:`\\( x=-1,\\ y=4 \\)`,ok:true},{t:`\\( x=1,\\ y=3 \\)`,ok:false},{t:`\\( x=-1,\\ y=-4 \\)`,ok:false},{t:`\\( x=1,\\ y=4 \\)`,ok:false}],
+ ex:`実部：\\(x+2=1\\Rightarrow x=-1\\)<br>虚部：\\(y-1=3\\Rightarrow y=4\\)<br>答え：\\(x=-1,\\ y=4\\)`},
+{q:`次の等式を満たす実数 \\(x, y\\) の値を求めよ。<br>\\( x+yi = -\\sqrt{5}\\,i \\)`,
+ cs:[{t:`\\( x=0,\\ y=-\\sqrt{5} \\)`,ok:true},{t:`\\( x=\\sqrt{5},\\ y=0 \\)`,ok:false},{t:`\\( x=0,\\ y=\\sqrt{5} \\)`,ok:false},{t:`\\( x=-\\sqrt{5},\\ y=0 \\)`,ok:false}],
+ ex:`右辺 \\(0+(-\\sqrt{5})i\\) に分解。<br>実部：\\(x=0\\)　虚部：\\(y=-\\sqrt{5}\\)<br>答え：\\(x=0,\\ y=-\\sqrt{5}\\)`},
+{q:`次の等式を満たす実数 \\(x, y\\) の値を求めよ。<br>\\( (x+1)+(y-2)i = -3 \\)`,
+ cs:[{t:`\\( x=-4,\\ y=2 \\)`,ok:true},{t:`\\( x=-4,\\ y=-2 \\)`,ok:false},{t:`\\( x=4,\\ y=2 \\)`,ok:false},{t:`\\( x=2,\\ y=-4 \\)`,ok:false}],
+ ex:`右辺 \\(-3+0\\cdot i\\)。<br>実部：\\(x+1=-3\\Rightarrow x=-4\\)　虚部：\\(y-2=0\\Rightarrow y=2\\)<br>答え：\\(x=-4,\\ y=2\\)`},
 ]},
 
 /* ━ 大問８ 複素数の加減乗 ━ */
-{title:"８　次の計算をせよ。（複素数の加減乗）",qs:[
-{q:`${mi("(2＋5i)＋(3－4i)")} を計算せよ。`,
- cs:[{t:`${mi("5＋i")}`,ok:true},
-     {t:`${mi("5－i")}`,ok:false},
-     {t:`${mi("－1＋9i")}`,ok:false},
-     {t:`${mi("5＋9i")}`,ok:false}],
- exp:`実部：2＋3＝5　虚部：5＋(－4)＝1<br>答え：<b>5＋i</b>`},
-
-{q:`${mi("(")}${rt("2")}${mi("－3i)－(")}${rt("2")}${mi("－i)")} を計算せよ。`,
- cs:[{t:`${mi("－2i")}`,ok:true},
-     {t:`${mi("2")}${rt("2")}${mi("－4i")}`,ok:false},
-     {t:`${mi("0")}`,ok:false},
-     {t:`${mi("2")}${rt("2")}${mi("－2i")}`,ok:false}],
- exp:`実部：${rt("2")}－${rt("2")}＝0　虚部：－3i－(－i)＝－2i<br>答え：<b>－2i</b>`},
-
-{q:`${mi("(2－i)(5＋4i)")} を計算せよ。`,
- cs:[{t:`${mi("14＋3i")}`,ok:true},
-     {t:`${mi("10－4i")}`,ok:false},
-     {t:`${mi("14－3i")}`,ok:false},
-     {t:`${mi("6＋3i")}`,ok:false}],
- exp:`展開：10＋8i－5i－4i²＝10＋3i＋4<br>答え：<b>14＋3i</b>`},
-
-{q:`${mi("(1＋2i)²")} を計算せよ。`,
- cs:[{t:`${mi("－3＋4i")}`,ok:true},
-     {t:`${mi("3＋4i")}`,ok:false},
-     {t:`${mi("－3－4i")}`,ok:false},
-     {t:`${mi("1＋4i")}`,ok:false}],
- exp:`1＋4i＋4i²＝1＋4i－4＝<b>－3＋4i</b>`},
+{ch:"８章　複素数の霧（加減乗）",qs:[
+{q:`次の計算をせよ。<br>\\( (2+5i)+(3-4i) \\)`,
+ cs:[{t:`\\( 5+i \\)`,ok:true},{t:`\\( 5-i \\)`,ok:false},{t:`\\( -1+9i \\)`,ok:false},{t:`\\( 5+9i \\)`,ok:false}],
+ ex:`実部：\\(2+3=5\\)　虚部：\\(5+(-4)=1\\)<br>答え：\\( 5+i \\)`},
+{q:`次の計算をせよ。<br>\\( (\\sqrt{2}-3i)-(\\sqrt{2}-i) \\)`,
+ cs:[{t:`\\( -2i \\)`,ok:true},{t:`\\( 2\\sqrt{2}-4i \\)`,ok:false},{t:`\\( 0 \\)`,ok:false},{t:`\\( 2\\sqrt{2}-2i \\)`,ok:false}],
+ ex:`実部：\\(\\sqrt{2}-\\sqrt{2}=0\\)　虚部：\\(-3i-(-i)=-2i\\)<br>答え：\\( -2i \\)`},
+{q:`次の計算をせよ。<br>\\( (2-i)(5+4i) \\)`,
+ cs:[{t:`\\( 14+3i \\)`,ok:true},{t:`\\( 10-4i \\)`,ok:false},{t:`\\( 14-3i \\)`,ok:false},{t:`\\( 6+3i \\)`,ok:false}],
+ ex:`展開：\\(10+8i-5i-4i^2=10+3i-4\\cdot(-1)=10+3i+4\\)<br>答え：\\( 14+3i \\)`},
+{q:`次の計算をせよ。<br>\\( (1+2i)^2 \\)`,
+ cs:[{t:`\\( -3+4i \\)`,ok:true},{t:`\\( 3+4i \\)`,ok:false},{t:`\\( -3-4i \\)`,ok:false},{t:`\\( 1+4i \\)`,ok:false}],
+ ex:`\\(1+4i+4i^2=1+4i+4\\cdot(-1)=1-4+4i\\)<br>答え：\\( -3+4i \\)`},
 ]},
 
-/* ━ 大問９ 複素数の除法 ━ */
-{title:"９　次の計算をせよ。（複素数の有理化）",qs:[
-{q:`${fr("2－i","3＋i")} を計算せよ。`,
- cs:[{t:`${fr("1","2")}－${fr("1","2")}i`,ok:true},
-     {t:`${fr("1","2")}＋${fr("1","2")}i`,ok:false},
-     {t:`${fr("5＋5i","10")}`,ok:false},
-     {t:`${fr("5","10")}＋${fr("5","10")}i`,ok:false}],
- exp:`共役 3－i を分母・分子にかける。<br>(2－i)(3－i)＝6－5i＋i²＝5－5i<br>(3＋i)(3－i)＝10<br>答え：${fr("5－5i","10")}＝<b>${fr("1","2")}－${fr("1","2")}i</b>`},
-
-{q:`${fr("4","1－i")} を計算せよ。`,
- cs:[{t:`${mi("2＋2i")}`,ok:true},
-     {t:`${mi("2－2i")}`,ok:false},
-     {t:`${mi("4＋4i")}`,ok:false},
-     {t:`${mi("－2＋2i")}`,ok:false}],
- exp:`共役 1＋i をかける。<br>${fr("4(1＋i)","(1－i)(1＋i)")}＝${fr("4＋4i","2")}＝<b>2＋2i</b>`},
-
-{q:`${fr("2－i","2＋i")} を計算せよ。`,
- cs:[{t:`${fr("3","5")}－${fr("4","5")}i`,ok:true},
-     {t:`${fr("3","5")}＋${fr("4","5")}i`,ok:false},
-     {t:`${mi("1")}`,ok:false},
-     {t:`${mi("2－i")}（変形不要）`,ok:false}],
- exp:`共役 2－i をかける。<br>(2－i)²＝4－4i＋i²＝3－4i<br>(2＋i)(2－i)＝5<br>答え：<b>${fr("3","5")}－${fr("4","5")}i</b>`},
-
-{q:`${fr("1","2i")} を計算せよ。`,
- cs:[{t:`－${fr("1","2")}i`,ok:true},
-     {t:`${fr("1","2")}i`,ok:false},
-     {t:`${fr("i","2")}`,ok:false},
-     {t:`－${fr("i","2")}`,ok:false}],
- exp:`分子・分母に i をかける。<br>${fr("i","2i²")}＝${fr("i","－2")}＝<b>－${fr("1","2")}i</b>`},
+/* ━ 大問９ 複素数の有理化 ━ */
+{ch:"９章　共役の呪文（有理化）",qs:[
+{q:`次の計算をせよ。<br>\\( \\dfrac{2-i}{3+i} \\)`,
+ cs:[{t:`\\( \\dfrac{1}{2}-\\dfrac{1}{2}i \\)`,ok:true},{t:`\\( \\dfrac{1}{2}+\\dfrac{1}{2}i \\)`,ok:false},{t:`\\( \\dfrac{2}{5}-\\dfrac{3}{5}i \\)`,ok:false},{t:`\\( 1-i \\)`,ok:false}],
+ ex:`共役 \\(3-i\\) を分母・分子にかける。<br>\\((2-i)(3-i)=6-2i-3i+i^2=5-5i\\)<br>\\((3+i)(3-i)=9+1=10\\)<br>答え：\\( \\dfrac{5-5i}{10}=\\dfrac{1}{2}-\\dfrac{1}{2}i \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{4}{1-i} \\)`,
+ cs:[{t:`\\( 2+2i \\)`,ok:true},{t:`\\( 2-2i \\)`,ok:false},{t:`\\( 4+4i \\)`,ok:false},{t:`\\( -2+2i \\)`,ok:false}],
+ ex:`共役 \\(1+i\\) をかける。<br>\\(\\dfrac{4(1+i)}{(1-i)(1+i)}=\\dfrac{4+4i}{2}\\)<br>答え：\\( 2+2i \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{2-i}{2+i} \\)`,
+ cs:[{t:`\\( \\dfrac{3}{5}-\\dfrac{4}{5}i \\)`,ok:true},{t:`\\( \\dfrac{3}{5}+\\dfrac{4}{5}i \\)`,ok:false},{t:`\\( 1 \\)`,ok:false},{t:`\\( 2-i \\)（変形不要）`,ok:false}],
+ ex:`共役 \\(2-i\\) をかける。<br>\\((2-i)^2=4-4i+i^2=3-4i\\)<br>\\((2+i)(2-i)=5\\)<br>答え：\\( \\dfrac{3}{5}-\\dfrac{4}{5}i \\)`},
+{q:`次の計算をせよ。<br>\\( \\dfrac{1}{2i} \\)`,
+ cs:[{t:`\\( -\\dfrac{1}{2}i \\)`,ok:true},{t:`\\( \\dfrac{1}{2}i \\)`,ok:false},{t:`\\( 2i \\)`,ok:false},{t:`\\( -2i \\)`,ok:false}],
+ ex:`分子・分母に \\(i\\) をかける。<br>\\(\\dfrac{1}{2i}=\\dfrac{i}{2i^2}=\\dfrac{i}{2 \\cdot (-1)}=\\dfrac{i}{-2}\\)<br>答え：\\( -\\dfrac{1}{2}i \\)`},
 ]},
 
 /* ━ 大問10 2次方程式 ━ */
-{title:"10　次の２次方程式を解け。",qs:[
-{q:`${mi("x²－x＋1＝0")} を解け。`,
- cs:[{t:`${mi("x＝")}${fr(`1±${rt("3")}i`,"2")}`,ok:true},
-     {t:`${mi("x＝")}${fr(`1±${rt("3")}`,"2")}`,ok:false},
-     {t:`${mi("x＝")}${fr(`－1±${rt("3")}i`,"2")}`,ok:false},
-     {t:`${mi("x＝1±")}${rt("3")}${mi("i")}`,ok:false}],
- exp:`解の公式：x＝${fr(`1±${rt("1－4")}`,"2")}＝${fr(`1±${rt("－3")}`,"2")}＝<b>${fr("1±√3 i","2")}</b><br>D＝－3＜0 なので虚数解。`},
-
-{q:`${mi("x²－6x＋9＝0")} を解け。`,
- cs:[{t:`${mi("x＝3")}（重解）`,ok:true},
-     {t:`${mi("x＝3、x＝－3")}`,ok:false},
-     {t:`${mi("x＝6、x＝0")}`,ok:false},
-     {t:`${mi("x＝")}${fr(`6±${rt("9")}`,"2")}`,ok:false}],
- exp:`(x－3)²＝0 → D＝0 なので重解。<br>答え：<b>x＝3（重解）</b>`},
-
-{q:`${mi("x²＋7x＋8＝0")} を解け。`,
- cs:[{t:`${mi("x＝")}${fr(`－7±${rt("17")}`,"2")}`,ok:true},
-     {t:`${mi("x＝")}${fr(`7±${rt("17")}`,"2")}`,ok:false},
-     {t:`${mi("x＝")}${fr(`－7±${rt("49")}`,"2")}`,ok:false},
-     {t:`${mi("x＝")}${fr(`－7±${rt("33")}`,"2")}`,ok:false}],
- exp:`x＝${fr(`－7±${rt("49－32")}`,"2")}＝<b>${fr(`－7±${rt("17")}`,"2")}</b>`},
-
-{q:`${mi("x²－8x＋24＝0")} を解け。`,
- cs:[{t:`${mi("x＝4±2")}${rt("2")}${mi("i")}`,ok:true},
-     {t:`${mi("x＝4±2")}${rt("2")}`,ok:false},
-     {t:`${mi("x＝－4±2")}${rt("2")}${mi("i")}`,ok:false},
-     {t:`${mi("x＝8±2")}${rt("2")}${mi("i")}`,ok:false}],
- exp:`x＝${fr(`8±${rt("64－96")}`,"2")}＝${fr(`8±${rt("－32")}`,"2")}＝${fr(`8±4${rt("2")}i`,"2")}＝<b>4±2√2 i</b>`},
-
-{q:`${mi("2x²－4x＋3＝0")} を解け。`,
- cs:[{t:`${mi("x＝")}${fr(`2±${rt("2")}i`,"2")}`,ok:true},
-     {t:`${mi("x＝")}${fr(`4±${rt("2")}i`,"4")}`,ok:false},
-     {t:`${mi("x＝")}${fr(`2±${rt("2")}`,"2")}`,ok:false},
-     {t:`${mi("x＝2±")}${rt("2")}${mi("i")}`,ok:false}],
- exp:`x＝${fr(`4±${rt("16－24")}`,"4")}＝${fr(`4±2${rt("2")}i`,"4")}＝<b>${fr(`2±${rt("2")}i`,"2")}</b>`},
-
-{q:`${mi("x²－")}${rt("5")}${mi("x＋3＝0")} を解け。`,
- cs:[{t:`${mi("x＝")}${fr(`${rt("5")}±${rt("7")}i`,"2")}`,ok:true},
-     {t:`${mi("x＝")}${fr(`${rt("5")}±${rt("7")}`,"2")}`,ok:false},
-     {t:`${mi("x＝")}${fr(`－${rt("5")}±${rt("7")}i`,"2")}`,ok:false},
-     {t:`${mi("x＝")}${fr(`${rt("5")}±i`,"2")}`,ok:false}],
- exp:`x＝${fr(`${rt("5")}±${rt("5－12")}`,"2")}＝${fr(`${rt("5")}±${rt("－7")}`,"2")}＝<b>${fr("√5±√7 i","2")}</b>`},
+{ch:"10章　虚数の龍（２次方程式）",qs:[
+{q:`次の２次方程式を解け。<br>\\( x^2-x+1=0 \\)`,
+ cs:[{t:`\\( x=\\dfrac{1 \\pm \\sqrt{3}\\,i}{2} \\)`,ok:true},{t:`\\( x=\\dfrac{1 \\pm \\sqrt{3}}{2} \\)`,ok:false},{t:`\\( x=\\dfrac{-1 \\pm \\sqrt{3}\\,i}{2} \\)`,ok:false},{t:`\\( x=1 \\pm \\sqrt{3}\\,i \\)`,ok:false}],
+ ex:`\\(D=1-4=-3<0\\) → 虚数解。<br>\\(x=\\dfrac{1 \\pm \\sqrt{-3}}{2}\\)<br>答え：\\( x=\\dfrac{1 \\pm \\sqrt{3}\\,i}{2} \\)`},
+{q:`次の２次方程式を解け。<br>\\( x^2-6x+9=0 \\)`,
+ cs:[{t:`\\( x=3 \\)（重解）`,ok:true},{t:`\\( x=3,\\ x=-3 \\)`,ok:false},{t:`\\( x=6,\\ x=0 \\)`,ok:false},{t:`\\( x=\\dfrac{6 \\pm \\sqrt{9}}{2} \\)`,ok:false}],
+ ex:`\\((x-3)^2=0\\) → \\(D=0\\) なので重解。<br>答え：\\( x=3 \\)（重解）`},
+{q:`次の２次方程式を解け。<br>\\( x^2+7x+8=0 \\)`,
+ cs:[{t:`\\( x=\\dfrac{-7 \\pm \\sqrt{17}}{2} \\)`,ok:true},{t:`\\( x=\\dfrac{7 \\pm \\sqrt{17}}{2} \\)`,ok:false},{t:`\\( x=\\dfrac{-7 \\pm \\sqrt{49}}{2} \\)`,ok:false},{t:`\\( x=\\dfrac{-7 \\pm \\sqrt{33}}{2} \\)`,ok:false}],
+ ex:`解の公式：\\(x=\\dfrac{-7 \\pm \\sqrt{49-32}}{2}\\)<br>答え：\\( x=\\dfrac{-7 \\pm \\sqrt{17}}{2} \\)`},
+{q:`次の２次方程式を解け。<br>\\( x^2-8x+24=0 \\)`,
+ cs:[{t:`\\( x=4 \\pm 2\\sqrt{2}\\,i \\)`,ok:true},{t:`\\( x=4 \\pm 2\\sqrt{2} \\)`,ok:false},{t:`\\( x=-4 \\pm 2\\sqrt{2}\\,i \\)`,ok:false},{t:`\\( x=8 \\pm 2\\sqrt{2}\\,i \\)`,ok:false}],
+ ex:`\\(x=\\dfrac{8 \\pm \\sqrt{-32}}{2}=\\dfrac{8 \\pm 4\\sqrt{2}\\,i}{2}\\)<br>答え：\\( x=4 \\pm 2\\sqrt{2}\\,i \\)`},
+{q:`次の２次方程式を解け。<br>\\( 2x^2-4x+3=0 \\)`,
+ cs:[{t:`\\( x=\\dfrac{2 \\pm \\sqrt{2}\\,i}{2} \\)`,ok:true},{t:`\\( x=\\dfrac{4 \\pm \\sqrt{2}\\,i}{4} \\)`,ok:false},{t:`\\( x=\\dfrac{2 \\pm \\sqrt{2}}{2} \\)`,ok:false},{t:`\\( x=2 \\pm \\sqrt{2}\\,i \\)`,ok:false}],
+ ex:`\\(x=\\dfrac{4 \\pm \\sqrt{16-24}}{4}=\\dfrac{4 \\pm 2\\sqrt{2}\\,i}{4}\\)<br>答え：\\( x=\\dfrac{2 \\pm \\sqrt{2}\\,i}{2} \\)`},
+{q:`次の２次方程式を解け。<br>\\( x^2-\\sqrt{5}\\,x+3=0 \\)`,
+ cs:[{t:`\\( x=\\dfrac{\\sqrt{5} \\pm \\sqrt{7}\\,i}{2} \\)`,ok:true},{t:`\\( x=\\dfrac{\\sqrt{5} \\pm \\sqrt{7}}{2} \\)`,ok:false},{t:`\\( x=\\dfrac{-\\sqrt{5} \\pm \\sqrt{7}\\,i}{2} \\)`,ok:false},{t:`\\( x=\\dfrac{\\sqrt{5} \\pm i}{2} \\)`,ok:false}],
+ ex:`\\(x=\\dfrac{\\sqrt{5} \\pm \\sqrt{5-12}}{2}=\\dfrac{\\sqrt{5} \\pm \\sqrt{-7}}{2}\\)<br>答え：\\( x=\\dfrac{\\sqrt{5} \\pm \\sqrt{7}\\,i}{2} \\)`},
 ]},
 
 ]; // END SECTIONS
 
-/* =====================================================
-   シャッフルロジック
-   ・毎回 Fisher-Yates で完全ランダムにシャッフル
-   ・正解位置を事前に「制約付きランダム」で決定
-     → 直前2問と同じ位置にならないよう試行
-===================================================== */
-function fisherYates(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-  return a;
+/* ===================================================
+   FLATTEN
+=================================================== */
+const ALL_Q=[];
+SECTIONS.forEach((sec,si)=>{
+  sec.qs.forEach(q=>ALL_Q.push({...q,ch:sec.ch,si}));
+});
+const TOTAL=ALL_Q.length; // 44
+
+/* ===================================================
+   SHUFFLE
+=================================================== */
+function fy(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function applyPos(cs){
+  /* 毎回完全ランダムにシャッフルするだけ — 位置固定なし */
+  return fy(cs);
 }
 
-function makePositions(n){
-  const pos=[];
-  for(let i=0;i<n;i++){
-    let p,tries=0;
-    do{ p=Math.floor(Math.random()*4); tries++;
-    }while(tries<30&&pos.length>=2&&pos[pos.length-1]===p&&pos[pos.length-2]===p);
-    pos.push(p);
+/* MathJax safe typeset */
+function mjTypeset(el){
+  if(window.MathJax&&typeof MathJax.typesetPromise==='function'){
+    MathJax.typesetPromise(el?[el]:[]).catch(()=>{});
   }
-  return pos;
 }
 
-function applyPosition(choices,targetPos){
-  const arr=fisherYates(choices);
-  const ci=arr.findIndex(c=>c.ok);
-  if(ci!==targetPos)[arr[ci],arr[targetPos]]=[arr[targetPos],arr[ci]];
-  return arr;
-}
-
-/* =====================================================
-   アプリ本体
-===================================================== */
-const TOTAL=44;
+/* ===================================================
+   GAME STATE
+=================================================== */
 const LBLS=['ア','イ','ウ','エ'];
-let answered=[],correctCnt=0,positions=[];
+const MAX_HP=100, XP_OK=40, HP_DMG=10;
+let hp,xp,lv,correct,totalXP,cur,shuffledQ,results;
+let lvlPending=false;
 
-function appInit(){
-  positions=makePositions(TOTAL);
-  answered=Array(TOTAL).fill(false);
-  correctCnt=0;
-  document.getElementById('result').classList.remove('show');
-  document.getElementById('root').innerHTML='';
-  buildDOM();
-  updateUI();
+function getLv(xp){let r=LEVELS[0];for(const l of LEVELS)if(xp>=l.need)r=l;return r;}
+function getNextXP(xp){for(let i=1;i<LEVELS.length;i++)if(xp<LEVELS[i].need)return LEVELS[i].need;return LEVELS[LEVELS.length-1].need;}
+
+/* ===================================================
+   INIT
+=================================================== */
+function startGame(){
+  document.getElementById('titleScreen').style.display='none';
+  document.getElementById('statusBar').classList.add('active');
+  document.getElementById('gameArea').classList.add('active');
+  newGame();
+}
+function restartGame(){
+  document.getElementById('resultScreen').classList.remove('show');
+  document.getElementById('gameArea').classList.add('active');
+  newGame();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function newGame(){
+  hp=MAX_HP; xp=0; lv=1; correct=0; totalXP=0; cur=0; lvlPending=false;
+  shuffledQ=ALL_Q.map(q=>({...q,shuffled:applyPos(q.cs)}));
+  results=Array(TOTAL).fill(null);
+  buildDots();
+  renderQ();
+  updateSB();
 }
 
-function buildDOM(){
-  const root=document.getElementById('root');
-  let gi=0;
-  SECTIONS.forEach(sec=>{
-    const sh=document.createElement('div');
-    sh.className='sec';sh.textContent=sec.title;root.appendChild(sh);
-    sec.qs.forEach(q=>{root.appendChild(makeCard(q,gi));gi++;});
+/* ===================================================
+   DOTS
+=================================================== */
+function buildDots(){
+  const c=document.getElementById('progDots');
+  c.innerHTML='';
+  ALL_Q.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===0?' current':'');
+    d.id=`dot${i}`;
+    c.appendChild(d);
+  });
+}
+function updateDots(){
+  ALL_Q.forEach((_,i)=>{
+    const d=document.getElementById(`dot${i}`);
+    if(!d)return;
+    d.className='dot'+(i<cur?(results[i]?'done-ok':'done-ng'):i===cur?'current':'');
   });
 }
 
-function makeCard(q,gi){
-  const shuffled=applyPosition(q.cs,positions[gi]);
-  const card=document.createElement('div');
-  card.className='card';card.id=`c${gi}`;
-  const inner=document.createElement('div');inner.className='card-in';
-  const num=document.createElement('div');num.className='qnum';num.textContent=`(${gi+1})`;
-  inner.appendChild(num);
-  const body=document.createElement('div');body.className='qbody';
-  const qt=document.createElement('div');qt.className='qtext';qt.innerHTML=q.q;body.appendChild(qt);
-  const cdiv=document.createElement('div');cdiv.className='choices';
-  shuffled.forEach((ch,ci)=>{
-    const btn=document.createElement('button');btn.className='cbtn';
-    btn.innerHTML=`<span class="clbl">${LBLS[ci]}</span><span>${ch.t}</span>`;
-    btn.onclick=()=>answer(gi,btn,ch.ok,shuffled,q.exp);
-    cdiv.appendChild(btn);
+/* ===================================================
+   RENDER QUESTION
+=================================================== */
+function renderQ(){
+  if(cur>=TOTAL){showResult();return;}
+  const q=shuffledQ[cur];
+
+  // chapter badge
+  document.getElementById('chapBadge').innerHTML=`<span>${CHAP_ICONS[q.si]}</span><span>${q.ch}</span>`;
+  document.getElementById('qNumBadge').textContent=`Q ${cur+1} / ${TOTAL}`;
+  document.getElementById('qFlavor').textContent='⚔️ '+FLAVORS[q.si];
+  document.getElementById('qText').innerHTML=q.q;
+
+  // choices
+  const cd=document.getElementById('choices');
+  cd.innerHTML='';
+  q.shuffled.forEach((ch,ci)=>{
+    const btn=document.createElement('button');
+    btn.className='cbtn';
+    btn.innerHTML=`<span class="lbl">${LBLS[ci]}</span><span>${ch.t}</span>`;
+    btn.onclick=()=>doAnswer(btn,ch.ok,q.shuffled,q.ex);
+    cd.appendChild(btn);
   });
-  body.appendChild(cdiv);
-  const expDiv=document.createElement('div');expDiv.className='expbox';expDiv.id=`e${gi}`;body.appendChild(expDiv);
-  const nw=document.createElement('div');nw.className='nxt-wrap';
-  const nb=document.createElement('button');nb.className='nxt';nb.id=`n${gi}`;
-  nb.textContent=gi<TOTAL-1?'次の問題へ →':'結果を見る 🎯';
-  nb.onclick=()=>{
-    const next=document.getElementById(`c${gi+1}`);
-    if(next)next.scrollIntoView({behavior:'smooth',block:'center'});
-    else showResult();
-  };
-  nw.appendChild(nb);body.appendChild(nw);
-  inner.appendChild(body);card.appendChild(inner);
-  return card;
+
+  // reset exp & next
+  const eb=document.getElementById('expbox');
+  eb.className='expbox';eb.innerHTML='';
+  const nb=document.getElementById('btnNext');
+  nb.className='btn-next';
+  nb.textContent=cur<TOTAL-1?'次の試練へ ▶':'最終結果を見る 🏆';
+
+  // card animation
+  const card=document.getElementById('qCard');
+  card.style.animation='none';
+  card.offsetHeight;
+  card.style.animation='';
+
+  updateDots();
+  mjTypeset(document.getElementById('qCard'));
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function answer(gi,clickedBtn,isOk,shuffled,expHtml){
-  if(answered[gi])return;
-  answered[gi]=true;
-  if(isOk)correctCnt++;
-  document.getElementById(`c${gi}`).querySelectorAll('.cbtn').forEach((btn,i)=>{
-    btn.disabled=true;
-    if(shuffled[i].ok)btn.classList.add('ok');
+/* ===================================================
+   ANSWER
+=================================================== */
+function doAnswer(clickedBtn,isOk,shuffled,expHtml){
+  // disable all
+  document.querySelectorAll('.cbtn').forEach((b,i)=>{
+    b.disabled=true;
+    if(shuffled[i].ok)b.classList.add('ok');
   });
   if(!isOk)clickedBtn.classList.add('ng');
-  const expDiv=document.getElementById(`e${gi}`);
-  expDiv.innerHTML=`<div class="exp-t">${isOk?'✅ 正解！':'❌ 不正解…'}</div>${expHtml}`;
-  expDiv.className=`expbox show ${isOk?'ok':'ng'}`;
-  document.getElementById(`n${gi}`).classList.add('show');
-  updateUI();
-  if(answered.every(Boolean))setTimeout(showResult,500);
+
+  results[cur]=isOk;
+  if(isOk){correct++;xp+=XP_OK;totalXP+=XP_OK;spawnParticles('✨',5);spawnPopup(`＋${XP_OK} EXP`,'ok');}
+  else{hp=Math.max(0,hp-HP_DMG);spawnPopup(`－${HP_DMG} HP`,'ng');}
+
+  // explanation
+  const eb=document.getElementById('expbox');
+  eb.innerHTML=`<div class="exp-t">${isOk?'✨ 正解！EXP獲得！':'💔 不正解… HPが減った'}</div>${expHtml}`;
+  eb.className=`expbox show ${isOk?'ok':'ng'}`;
+
+  // level check
+  const newLv=getLv(xp);
+  if(newLv.lv>lv){lv=newLv.lv;lvlPending=newLv;setTimeout(()=>showLvlUp(newLv),300);}
+
+  updateSB();
+  updateDots();
+  mjTypeset(document.getElementById('expbox'));
+
+  // show next btn (delay if level up)
+  setTimeout(()=>{document.getElementById('btnNext').classList.add('show');},lvlPending?800:200);
 }
 
-function updateUI(){
-  const done=answered.filter(Boolean).length;
-  document.getElementById('pbar').style.width=(done/TOTAL*100)+'%';
-  document.getElementById('ptxt').textContent=`${done} / ${TOTAL}`;
-  document.getElementById('badge').textContent=`${correctCnt} / ${done}`;
+function nextQ(){
+  cur++;
+  lvlPending=false;
+  renderQ();
 }
 
+/* ===================================================
+   STATUS BAR
+=================================================== */
+function updateSB(){
+  const li=getLv(xp);
+  const nextXP=getNextXP(xp);
+  const prevXP=li.need;
+  const xpPct=li.lv>=10?100:Math.round((xp-prevXP)/(nextXP-prevXP)*100);
+  const hpPct=Math.round(hp/MAX_HP*100);
+
+  document.getElementById('sbAvatar').textContent=li.emoji;
+  document.getElementById('sbName').textContent=li.title;
+  document.getElementById('sbLv').textContent=`Lv.${li.lv}`;
+
+  const hb=document.getElementById('hpBar');
+  hb.style.width=hpPct+'%';
+  hb.style.background=hpPct>50?'linear-gradient(90deg,#22c55e,#86efac)':hpPct>25?'linear-gradient(90deg,#eab308,#fde047)':'linear-gradient(90deg,#ef4444,#fca5a5)';
+  document.getElementById('hpVal').textContent=`${hp} / ${MAX_HP}`;
+  document.getElementById('xpBar').style.width=xpPct+'%';
+  document.getElementById('xpVal').textContent=li.lv>=10?'MAX':`${xp} / ${nextXP}`;
+  document.getElementById('sbScore').textContent=`✨ ${correct} / ${cur}`;
+}
+
+/* ===================================================
+   LEVEL UP
+=================================================== */
+function showLvlUp(li){
+  document.getElementById('lvlStars').textContent='★'.repeat(Math.min(li.lv,5));
+  document.getElementById('lvlNum').textContent=li.lv;
+  document.getElementById('lvlTitle2').textContent=li.title;
+  document.getElementById('lvlSkill').textContent=li.skill;
+  document.getElementById('lvlOverlay').classList.add('show');
+}
+function closeLvl(){document.getElementById('lvlOverlay').classList.remove('show');}
+
+/* ===================================================
+   PARTICLES
+=================================================== */
+function spawnParticles(em,n){
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');p.className='particle';p.textContent=em;
+      p.style.cssText=`left:${20+Math.random()*60}%;top:${30+Math.random()*30}%;`;
+      document.body.appendChild(p);setTimeout(()=>p.remove(),950);
+    },i*90);
+  }
+}
+function spawnPopup(txt,type){
+  const p=document.createElement('div');p.className=`xp-popup ${type}`;p.textContent=txt;
+  p.style.cssText='left:50%;top:40%;transform:translateX(-50%)';
+  document.body.appendChild(p);setTimeout(()=>p.remove(),1150);
+}
+
+/* ===================================================
+   RESULT
+=================================================== */
 function showResult(){
-  const pct=correctCnt/TOTAL;
-  let em,msg;
-  if(pct>=.9){em='🏆';msg='ほぼ満点！本番も自信を持って臨もう！';}
-  else if(pct>=.7){em='😊';msg='よくできました！間違えた問題の解説を読んでさらに完璧に。';}
-  else if(pct>=.5){em='🤔';msg='半分以上正解！解説を読んでもう一度チャレンジしてみよう。';}
-  else{em='💪';msg='解説をじっくり読んで繰り返し解くのが上達の近道。くじけないで！';}
-  document.getElementById('rEm').textContent=em;
-  document.getElementById('rSc').textContent=correctCnt;
-  document.getElementById('rMsg').textContent=msg;
-  const r=document.getElementById('result');r.classList.add('show');
-  r.scrollIntoView({behavior:'smooth',block:'center'});
-}
+  document.getElementById('gameArea').classList.remove('active');
+  const pct=correct/TOTAL;
+  const li=getLv(xp);
+  let trophy,ttl,rank,msg;
+  if(pct>=.9){trophy='👑';ttl='伝説の試練、完全制覇！';rank='🌟 最高位　伝説の賢者認定';msg='ほぼ完璧！あなたはすでに魔法学院最強の賢者です。本番も自信を持って臨みましょう！';}
+  else if(pct>=.7){trophy='🏆';ttl='試練をクリア！';rank='🎓 上位　大賢者の称号';msg='よく頑張りました！間違えた問題の解説をもう一度読んで、満点を目指しましょう。';}
+  else if(pct>=.5){trophy='⚔️';ttl='半分以上クリア！';rank='📜 中位　魔法学士の称号';msg='苦手な章の解説を集中して読んでもう一度チャレンジ！あと少しで上位に届きます。';}
+  else{trophy='🔥';ttl='修行が必要だ…';rank='🌱 見習い　魔法使いの卵';msg='解説をじっくり読んで繰り返し挑戦することで必ず強くなれます！くじけないで！';}
 
-appInit();
+  document.getElementById('rTrophy').textContent=trophy;
+  document.getElementById('rTtl').textContent=ttl;
+  document.getElementById('rScore').textContent=`${correct} / ${TOTAL}`;
+  document.getElementById('rLevel').textContent=`Lv.${li.lv}`;
+  document.getElementById('rXP').textContent=totalXP;
+  document.getElementById('rRank').textContent=rank;
+  document.getElementById('rMsg').textContent=msg;
+  document.getElementById('resultScreen').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 </script>
 </body>
 </html>
