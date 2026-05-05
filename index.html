@@ -394,6 +394,7 @@ mjx-container{color:var(--white)!important}
   <div class="res-card">
     <div class="res-trophy" id="rTrophy">🏆</div>
     <div class="res-ttl"   id="rTtl">試練クリア！</div>
+    <div class="res-set-info" id="rSetInfo" style="font-size:13px;color:#a090d0;margin-bottom:16px;letter-spacing:.04em"></div>
     <div class="res-stats">
       <div class="rstat"><div class="rstat-val" id="rScore">0</div><div class="rstat-lbl">正解数</div></div>
       <div class="rstat"><div class="rstat-val" id="rLevel">1</div><div class="rstat-lbl">最終 Lv</div></div>
@@ -639,8 +640,25 @@ function mjTypeset(el){
 =================================================== */
 const LBLS=['ア','イ','ウ','エ'];
 const MAX_HP=100, XP_OK=40, HP_DMG=10;
+const SET_SIZE=15; // 1周あたりの問題数（最終周は14問）
+const TOTAL_SETS=3;
+
+// 44問を3セットに分割（15・15・14）
+// セット割り当ては固定インデックスで均等に大問から取る
+function buildSets(){
+  // ALL_Qをシャッフルして3分割
+  const shuffled = fy([...ALL_Q.map((q,i)=>i)]); // インデックスをシャッフル
+  const s1 = shuffled.slice(0,15);
+  const s2 = shuffled.slice(15,30);
+  const s3 = shuffled.slice(30,44);
+  return [s1,s2,s3];
+}
+
 let hp,xp,lv,correct,totalXP,cur,shuffledQ,results;
 let lvlPending=false;
+let setIdx=0;       // 現在の周回（0,1,2）
+let setIndices=[];  // 3セット分のインデックス配列
+let setTotal=0;     // この周の問題数
 
 function getLv(xp){let r=LEVELS[0];for(const l of LEVELS)if(xp>=l.need)r=l;return r;}
 function getNextXP(xp){for(let i=1;i<LEVELS.length;i++)if(xp<LEVELS[i].need)return LEVELS[i].need;return LEVELS[LEVELS.length-1].need;}
@@ -652,18 +670,25 @@ function startGame(){
   document.getElementById('titleScreen').style.display='none';
   document.getElementById('statusBar').classList.add('active');
   document.getElementById('gameArea').classList.add('active');
+  setIdx=0;
+  setIndices=buildSets();
   newGame();
 }
 function restartGame(){
   document.getElementById('resultScreen').classList.remove('show');
   document.getElementById('gameArea').classList.add('active');
+  // 周回を進める（3周したら0に戻す）
+  setIdx=(setIdx+1)%TOTAL_SETS;
   newGame();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function newGame(){
+  const idxList = setIndices[setIdx];
+  setTotal = idxList.length;
   hp=MAX_HP; xp=0; lv=1; correct=0; totalXP=0; cur=0; lvlPending=false;
-  shuffledQ=ALL_Q.map(q=>({...q,shuffled:applyPos(q.cs)}));
-  results=Array(TOTAL).fill(null);
+  // この周の問題だけ取り出し、選択肢をシャッフル
+  shuffledQ = idxList.map(i=>({...ALL_Q[i], shuffled:applyPos(ALL_Q[i].cs)}));
+  results=Array(setTotal).fill(null);
   buildDots();
   renderQ();
   updateSB();
@@ -675,31 +700,31 @@ function newGame(){
 function buildDots(){
   const c=document.getElementById('progDots');
   c.innerHTML='';
-  ALL_Q.forEach((_,i)=>{
+  for(let i=0;i<setTotal;i++){
     const d=document.createElement('div');
     d.className='dot'+(i===0?' current':'');
     d.id=`dot${i}`;
     c.appendChild(d);
-  });
+  }
 }
 function updateDots(){
-  ALL_Q.forEach((_,i)=>{
+  for(let i=0;i<setTotal;i++){
     const d=document.getElementById(`dot${i}`);
     if(!d)return;
     d.className='dot'+(i<cur?(results[i]?'done-ok':'done-ng'):i===cur?'current':'');
-  });
+  }
 }
 
 /* ===================================================
    RENDER QUESTION
 =================================================== */
 function renderQ(){
-  if(cur>=TOTAL){showResult();return;}
+  if(cur>=setTotal){showResult();return;}
   const q=shuffledQ[cur];
 
   // chapter badge
   document.getElementById('chapBadge').innerHTML=`<span>${CHAP_ICONS[q.si]}</span><span>${q.ch}</span>`;
-  document.getElementById('qNumBadge').textContent=`Q ${cur+1} / ${TOTAL}`;
+  document.getElementById('qNumBadge').textContent=`Q ${cur+1} / ${setTotal}　（第${setIdx+1}周）`;
   document.getElementById('qFlavor').textContent='⚔️ '+FLAVORS[q.si];
   document.getElementById('qText').innerHTML=q.q;
 
@@ -719,7 +744,7 @@ function renderQ(){
   eb.className='expbox';eb.innerHTML='';
   const nb=document.getElementById('btnNext');
   nb.className='btn-next';
-  nb.textContent=cur<TOTAL-1?'次の試練へ ▶':'最終結果を見る 🏆';
+  nb.textContent=cur<setTotal-1?'次の試練へ ▶':'このセットの結果を見る 🏆';
 
   // card animation
   const card=document.getElementById('qCard');
@@ -828,21 +853,42 @@ function spawnPopup(txt,type){
 =================================================== */
 function showResult(){
   document.getElementById('gameArea').classList.remove('active');
-  const pct=correct/TOTAL;
+  const pct=correct/setTotal;
   const li=getLv(xp);
+  const isLastSet = setIdx===TOTAL_SETS-1;
+  const nextSetIdx = (setIdx+1)%TOTAL_SETS;
+
   let trophy,ttl,rank,msg;
-  if(pct>=.9){trophy='👑';ttl='伝説の試練、完全制覇！';rank='🌟 最高位　伝説の賢者認定';msg='ほぼ完璧！あなたはすでに魔法学院最強の賢者です。本番も自信を持って臨みましょう！';}
-  else if(pct>=.7){trophy='🏆';ttl='試練をクリア！';rank='🎓 上位　大賢者の称号';msg='よく頑張りました！間違えた問題の解説をもう一度読んで、満点を目指しましょう。';}
-  else if(pct>=.5){trophy='⚔️';ttl='半分以上クリア！';rank='📜 中位　魔法学士の称号';msg='苦手な章の解説を集中して読んでもう一度チャレンジ！あと少しで上位に届きます。';}
-  else{trophy='🔥';ttl='修行が必要だ…';rank='🌱 見習い　魔法使いの卵';msg='解説をじっくり読んで繰り返し挑戦することで必ず強くなれます！くじけないで！';}
+  if(pct>=.9){trophy='👑';ttl='完璧な試練制覇！';rank='🌟 最高位　伝説の賢者認定';}
+  else if(pct>=.7){trophy='🏆';ttl='試練をクリア！';rank='🎓 上位　大賢者の称号';}
+  else if(pct>=.5){trophy='⚔️';ttl='半分以上クリア！';rank='📜 中位　魔法学士の称号';}
+  else{trophy='🔥';ttl='修行が必要だ…';rank='🌱 見習い　魔法使いの卵';}
+
+  // 周回ごとのメッセージ
+  const setMsgs=[
+    `第1周（全3周）クリア！残り2周で全44問制覇できるぞ。次は別の${setTotal}問が待っている！`,
+    `第2周クリア！あと1周で全問制覇。最後のセットに挑め！`,
+    `🎉 全3周コンプリート！全44問に触れたことになる。お疲れさまでした！`,
+  ];
+  msg = setMsgs[setIdx];
 
   document.getElementById('rTrophy').textContent=trophy;
   document.getElementById('rTtl').textContent=ttl;
-  document.getElementById('rScore').textContent=`${correct} / ${TOTAL}`;
+  document.getElementById('rSetInfo').textContent=`第${setIdx+1}周 / 全3周　（${setTotal}問セット）`;
+  document.getElementById('rScore').textContent=`${correct} / ${setTotal}`;
   document.getElementById('rLevel').textContent=`Lv.${li.lv}`;
   document.getElementById('rXP').textContent=totalXP;
   document.getElementById('rRank').textContent=rank;
   document.getElementById('rMsg').textContent=msg;
+
+  // リトライボタンのテキストを周回に合わせる
+  const retryBtn = document.querySelector('.btn-retry');
+  if(isLastSet){
+    retryBtn.textContent='🔄 最初から全部やり直す';
+  } else {
+    retryBtn.textContent=`▶ 第${nextSetIdx+1}周へ進む（残り${TOTAL_SETS-1-setIdx}周）`;
+  }
+
   document.getElementById('resultScreen').classList.add('show');
   window.scrollTo({top:0,behavior:'smooth'});
 }
